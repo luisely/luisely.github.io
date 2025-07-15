@@ -33,7 +33,14 @@
   </div>
   <div id="result" class="h-8 mt-4 text-center text-white text-sm"></div>
   <script>
+    if(localStorage.getItem('000_name') && localStorage.getItem('000_digits')) {
+      const name = localStorage.getItem('000_name');
+      const digits = localStorage.getItem('000_digits');
+      document.getElementById('name').value = name;
+      document.getElementById('digits').value = digits;
+    }
     document.getElementById('registerBtn').addEventListener('click', async () => {
+
       const btn = document.getElementById('registerBtn');
       const resultDiv = document.getElementById('result');
       const name = document.getElementById('name').value.trim();
@@ -88,6 +95,8 @@
         btn.innerHTML = 'Registrar';
         btn.disabled = false;
         btn.classList.remove('opacity-50', 'cursor-not-allowed');
+        localStorage.setItem('000_name', name);
+        localStorage.setItem('000_digits', digits);
       }
     });
   </script>

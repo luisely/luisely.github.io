@@ -23,7 +23,7 @@
     <input class="w-full max-w-xs py-3 px-4 bg-zinc-300 rounded-lg outline-none text-lg hover:bg-zinc-100 transition"
       type="text" id="name" placeholder="Nome" />
     <input class="w-24 max-w-xs py-3 px-4 bg-zinc-300 rounded-lg outline-none text-lg hover:bg-zinc-100 transition"
-      type="text" id="digits" placeholder="3 Digits" />
+      type="number" id="digits" inputmode="numeric" pattern="[0-9]*" placeholder="3 Digits" />
   </div>
   <div class="w-full max-w-xs flex flex-col gap-2">
     <button id="registerBtn"
@@ -64,7 +64,7 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             PK: name,
-            SK: digits,
+            SK: digits.toString(),
             name,
             cpf3Digits: digits,
             date: dateBR,

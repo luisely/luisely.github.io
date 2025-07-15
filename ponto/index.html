@@ -25,13 +25,15 @@
     <input class="w-24 max-w-xs py-3 px-4 bg-zinc-300 rounded-lg outline-none text-lg hover:bg-zinc-100 transition"
       type="number" id="digits" inputmode="numeric" pattern="[0-9]*" placeholder="3 Digits" />
   </div>
-  <div class="w-full max-w-xs flex flex-col gap-2">
+  <div class="w-full max-w-xs flex flex-col">
     <button id="registerBtn"
-      class="w-full py-3 px-4 bg-blue-600 text-white rounded-lg shadow-lg text-lg font-semibold hover:bg-blue-700 transition">
+      class="w-full py-3 bg-blue-600 text-white rounded-lg shadow-lg text-lg font-semibold hover:bg-blue-700 transition">
       Registrar
     </button>
+    <div id="version" class="mt-1 text-right text-white text-xs opacity-20">v0.4</div>
   </div>
-  <div id="result" class="h-8 mt-4 text-center text-white text-sm"></div>
+  <div id="result" class="h-2 mt-1 text-center text-white text-sm"></div>
+
   <script>
     if(localStorage.getItem('000_name') && localStorage.getItem('000_digits')) {
       const name = localStorage.getItem('000_name');

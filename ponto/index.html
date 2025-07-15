@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Registrar</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+  <div class="w-full max-w-xs mx-auto">
+    <button
+      id="registerBtn"
+      class="w-full py-3 px-4 bg-blue-600 text-white rounded-lg shadow-lg text-lg font-semibold hover:bg-blue-700 transition"
+    >
+      Registrar
+    </button>
+    <div id="result" class="mt-4 text-center text-sm"></div>
+  </div>
+  <script>
+    document.getElementById('registerBtn').addEventListener('click', async () => {
+      const resultDiv = document.getElementById('result');
+      resultDiv.textContent = 'Registrando...';
+      try {
+        const response = await fetch('https://t6d9wao8qd.execute-api.us-east-1.amazonaws.com/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+                                name: "fernando",
+                                cpf3Digits: "024"
+                              })
+        });
+        if (response.ok) {
+          const data = await response.json();
+          resultDiv.textContent = 'Registrado com sucesso!';
+        } else {
+          resultDiv.textContent = 'Erro ao registrar.';
+        }
+      } catch (error) {
+        resultDiv.textContent = 'Falha de conexão.';
+      }
+    });
+  </script>
+</body>

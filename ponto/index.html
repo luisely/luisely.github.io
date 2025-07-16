@@ -11,12 +11,15 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
     rel="stylesheet">
   <title>Registrar</title>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+  
 </head>
 <style>
   body {
@@ -43,9 +46,8 @@
       class="w-full py-3 bg-blue-600 text-white rounded-lg shadow-lg text-lg font-semibold hover:bg-blue-700 transition">
       Registrar
     </button>
-    <div id="version" class="mt-1 text-right text-white text-xs opacity-20">v1.1</div>
+    <div id="version" class="mt-1 text-right text-white text-xs opacity-20">v1.2</div>
   </div>
-  <div id="result" class="h-2 mt-1 text-center text-white text-sm"></div>
   <div id="divPontos" class="w-full text-white h-32 max-w-xs mt-2 overflow-y-auto" ></div>
 
 
@@ -60,12 +62,18 @@
       document.getElementById('registerBtn').addEventListener('click', async () => {
 
         const btn = document.getElementById('registerBtn');
-        const resultDiv = document.getElementById('result');
         const name = document.getElementById('name').value.trim();
         const digits = document.getElementById('digits').value.trim();
 
         if (!name || !digits) {
-          resultDiv.textContent = 'Por favor, preencha todos os campos.';
+            Toastify({
+              text: "Faltou preencher os campos. ;)",
+              className: "rounded-lg",
+              duration: 3000,
+              gravity: "top",
+              position: "center",
+              backgroundColor: "#f48d2c",
+            }).showToast();
           return;
         }
 
@@ -98,13 +106,34 @@
           });
 
           if (response.status === 200 || response.status === 201) {
-            resultDiv.textContent = 'Registrado com sucesso!';
+              Toastify({
+                text: "Registrado com sucesso!",
+                className: "rounded-lg",
+                duration: 3000,
+                gravity: "top",
+                position: "center",
+                backgroundColor: "#22c55e",
+              }).showToast();
             atualizarTabelaPontos(name, digits);
           } else {
-            resultDiv.textContent = 'Erro ao registrar.';
+            Toastify({
+              text: "Erro ao registrar.",
+              className: "rounded-lg",
+              duration: 3000,
+              gravity: "top",
+              position: "center",
+              backgroundColor: "#ef4444",
+            }).showToast();
           }
         } catch (error) {
-          resultDiv.textContent = 'Falha de conexão.';
+            Toastify({
+              text: "Erro de comunicação.",
+              className: "rounded-lg",
+              duration: 3000,
+              gravity: "top",
+              position: "center",
+              backgroundColor: "#ef4444",
+            }).showToast();
         } finally {
           btn.innerHTML = 'Registrar';
           btn.disabled = false;
@@ -161,7 +190,14 @@
         const pontos = data.pontos || [];
         renderTabelaPontos(pontos);
       } catch (error) {
-        document.getElementById('divPontos').innerHTML = '<div class="text-red-400 text-center text-xs">Erro ao buscar registros.</div>';
+        Toastify({
+          text: "Erro de comunicação.",
+          className: "rounded-lg",
+          duration: 3000,
+          gravity: "top",
+          position: "center",
+          backgroundColor: "#ef4444",
+        }).showToast();
         console.error('Erro ao buscar registros:', error);
       }
     }

@@ -35,10 +35,10 @@
       class="w-full py-3 bg-blue-600 text-white rounded-lg shadow-lg text-lg font-semibold hover:bg-blue-700 transition">
       Registrar
     </button>
-    <div id="version" class="mt-1 text-right text-white text-xs opacity-20">v0.8</div>
+    <div id="version" class="mt-1 text-right text-white text-xs opacity-20">v1.0</div>
   </div>
   <div id="result" class="h-2 mt-1 text-center text-white text-sm"></div>
-  <div id="tabelaPontos" class="w-full h-32 max-w-xs mt-4"></div>
+  <div id="divPontos" class="w-full text-white h-32 max-w-xs mt-2"></div>
 
   <script>
       const name = localStorage.getItem('000_name');
@@ -112,30 +112,38 @@
     });
 
     function renderTabelaPontos(pontos) {
-      const tabelaDiv = document.getElementById('tabelaPontos');
-      if (pontos.length > 0) {
-        const table = `
-          <table class="min-w-full text-xs text-white">
-            <thead>
-              <tr class="bg-zinc-800">
-                <th class="px-2 py-1">Data</th>
-                <th class="px-2 py-1">Hora</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${pontos.map(ponto => `
-                <tr class="border-b border-zinc-700">
-                  <td class="px-2 py-1">${ponto.date}</td>
-                  <td class="px-2 py-1">${ponto.time}</td>
-                </tr>
-              `).join('')}
-            </tbody>
-          </table>
-        `;
-        tabelaDiv.innerHTML = table;
-      } else {
+      const tabelaDiv = document.getElementById('divPontos');
+      if (!pontos || pontos.length === 0) {
         tabelaDiv.innerHTML = '';
+        return;
       }
+
+      // Agrupa por data
+      const porData = {};
+      pontos.forEach(ponto => {
+        if (!porData[ponto.date]) porData[ponto.date] = [];
+        porData[ponto.date].push(ponto.time);
+      });
+
+      // Monta o HTML agrupado por data
+      let html = '';
+      Object.keys(porData).sort((a, b) => {
+        // Ordena datas mais recentes primeiro
+        const [da, ma, ya] = a.split('/').map(Number);
+        const [db, mb, yb] = b.split('/').map(Number);
+        return new Date(yb, mb - 1, db) - new Date(ya, ma - 1, da);
+      }).forEach(date => {
+        html += `<div class="text-center mb-1 text-lg font-bold tracking-widest">${date}</div>`;
+        html += `<div class="flex justify-between items-center mb-2">`;
+        porData[date]
+          .sort() // Ordena horários
+          .forEach(time => {
+            html += `<div class="text-md mx-2">• ${time}</div>`;
+          });
+        html += `</div>`;
+      });
+
+      tabelaDiv.innerHTML = html;
     }
 
     async function getPontos(name, digits) {
@@ -153,7 +161,7 @@
         const pontos = data.pontos || [];
         renderTabelaPontos(pontos);
       } catch (error) {
-        document.getElementById('tabelaPontos').innerHTML = '<div class="text-red-400 text-center text-xs">Erro ao buscar pontos.</div>';
+        document.getElementById('divPontos').innerHTML = '<div class="text-red-400 text-center text-xs">Erro ao buscar pontos.</div>';
         console.error('Erro ao buscar pontos:', error);
       }
     }

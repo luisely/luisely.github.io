@@ -35,10 +35,10 @@
       class="w-full py-3 bg-blue-600 text-white rounded-lg shadow-lg text-lg font-semibold hover:bg-blue-700 transition">
       Registrar
     </button>
-    <div id="version" class="mt-1 text-right text-white text-xs opacity-20">v0.7</div>
+    <div id="version" class="mt-1 text-right text-white text-xs opacity-20">v0.8</div>
   </div>
   <div id="result" class="h-2 mt-1 text-center text-white text-sm"></div>
-  <div id="tabelaPontos" class="w-full max-w-xs mt-4"></div>
+  <div id="tabelaPontos" class="w-full h-32 max-w-xs mt-4"></div>
 
   <script>
       const name = localStorage.getItem('000_name');
@@ -134,7 +134,7 @@
         `;
         tabelaDiv.innerHTML = table;
       } else {
-        tabelaDiv.innerHTML = '<div class="text-white text-xs opacity-60">Nenhum ponto encontrado.</div>';
+        tabelaDiv.innerHTML = '';
       }
     }
 

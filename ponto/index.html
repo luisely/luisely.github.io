@@ -62,10 +62,10 @@
       document.getElementById('registerBtn').addEventListener('click', async () => {
 
         const btn = document.getElementById('registerBtn');
-        const name = document.getElementById('name').value.trim();
+        const name = document.getElementById('name').value.trim().toLowerCase();
         const digits = document.getElementById('digits').value.trim();
 
-        if (!name || !digits) {
+        if (!name || !digits || digits.length !== 3 || isNaN(digits)) {
             Toastify({
               text: "Faltou preencher os campos. ;)",
               className: "rounded-lg",

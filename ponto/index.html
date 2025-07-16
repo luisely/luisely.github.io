@@ -120,36 +120,37 @@
       return data.json();
     } 
 
-    getPontos(name, digits)
-      .then(data => {
-        const tabelaDiv = document.getElementById('tabelaPontos');
-        if (data && data.length > 0) {
-          const table = `
-            <table class="min-w-full text-xs text-white">
-              <thead>
-                <tr class="bg-zinc-800">
-                  <th class="px-2 py-1">Data</th>
-                  <th class="px-2 py-1">Hora</th>
+  getPontos(name, digits)
+    .then(data => {
+      const tabelaDiv = document.getElementById('tabelaPontos');
+      const pontos = data.pontos || [];
+      if (pontos.length > 0) {
+        const table = `
+          <table class="min-w-full text-xs text-white">
+            <thead>
+              <tr class="bg-zinc-800">
+                <th class="px-2 py-1">Data</th>
+                <th class="px-2 py-1">Hora</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${pontos.map(ponto => `
+                <tr class="border-b border-zinc-700">
+                  <td class="px-2 py-1">${ponto.date}</td>
+                  <td class="px-2 py-1">${ponto.time}</td>
                 </tr>
-              </thead>
-              <tbody>
-                ${data.map(ponto => `
-                  <tr class="border-b border-zinc-700">
-                    <td class="px-2 py-1">${ponto.date}</td>
-                    <td class="px-2 py-1">${ponto.time}</td>
-                  </tr>
-                `).join('')}
-              </tbody>
-            </table>
-          `;
-          tabelaDiv.innerHTML = table;
-        } else {
-          tabelaDiv.innerHTML = '<div class="text-white text-xs opacity-60">Nenhum ponto encontrado.</div>';
-        }
-      })
-      .catch(error => {
-        document.getElementById('tabelaPontos').innerHTML = '<div class="text-red-400 text-center text-xs">Erro ao buscar pontos.</div>';
-        console.error('Erro ao buscar pontos:', error);
-      });
+              `).join('')}
+            </tbody>
+          </table>
+        `;
+        tabelaDiv.innerHTML = table;
+      } else {
+        tabelaDiv.innerHTML = '<div class="text-white text-xs opacity-60">Nenhum ponto encontrado.</div>';
+      }
+    })
+    .catch(error => {
+      document.getElementById('tabelaPontos').innerHTML = '<div class="text-red-400 text-center text-xs">Erro ao buscar pontos.</div>';
+      console.error('Erro ao buscar pontos:', error);
+    });
   </script>
 </body>

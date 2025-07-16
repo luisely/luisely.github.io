@@ -35,7 +35,7 @@
       class="w-full py-3 bg-blue-600 text-white rounded-lg shadow-lg text-lg font-semibold hover:bg-blue-700 transition">
       Registrar
     </button>
-    <div id="version" class="mt-1 text-right text-white text-xs opacity-20">v0.6</div>
+    <div id="version" class="mt-1 text-right text-white text-xs opacity-20">v0.7</div>
   </div>
   <div id="result" class="h-2 mt-1 text-center text-white text-sm"></div>
   <div id="tabelaPontos" class="w-full max-w-xs mt-4"></div>
@@ -95,6 +95,8 @@
         if (response.ok) {
           const data = await response.json();
           resultDiv.textContent = 'Registrado com sucesso!';
+          // Atualiza a tabela após registrar
+          atualizarTabelaPontos(name, digits);
         } else {
           resultDiv.textContent = 'Erro ao registrar.';
         }
@@ -109,21 +111,8 @@
       }
     });
 
-    console.log(name)
-
-    async function getPontos(name, digits) {
-      const data = await fetch(`https://t6d9wao8qd.execute-api.us-east-1.amazonaws.com/getPontos/${name}/${digits}`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' }
-      })
-
-      return data.json();
-    } 
-
-  getPontos(name, digits)
-    .then(data => {
+    function renderTabelaPontos(pontos) {
       const tabelaDiv = document.getElementById('tabelaPontos');
-      const pontos = data.pontos || [];
       if (pontos.length > 0) {
         const table = `
           <table class="min-w-full text-xs text-white">
@@ -147,10 +136,29 @@
       } else {
         tabelaDiv.innerHTML = '<div class="text-white text-xs opacity-60">Nenhum ponto encontrado.</div>';
       }
-    })
-    .catch(error => {
-      document.getElementById('tabelaPontos').innerHTML = '<div class="text-red-400 text-center text-xs">Erro ao buscar pontos.</div>';
-      console.error('Erro ao buscar pontos:', error);
-    });
+    }
+
+    async function getPontos(name, digits) {
+      const data = await fetch(`https://t6d9wao8qd.execute-api.us-east-1.amazonaws.com/getPontos/${name}/${digits}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+      })
+      return data.json();
+    }
+
+    // Função para buscar e atualizar a tabela
+    async function atualizarTabelaPontos(name, digits) {
+      try {
+        const data = await getPontos(name, digits);
+        const pontos = data.pontos || [];
+        renderTabelaPontos(pontos);
+      } catch (error) {
+        document.getElementById('tabelaPontos').innerHTML = '<div class="text-red-400 text-center text-xs">Erro ao buscar pontos.</div>';
+        console.error('Erro ao buscar pontos:', error);
+      }
+    }
+
+    // Chame ao carregar a página
+    atualizarTabelaPontos(name, digits);
   </script>
 </body>

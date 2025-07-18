@@ -19,11 +19,24 @@
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+  <script type="module" src="vars.js"></script>
   
 </head>
 <style>
+  @font-face {
+    font-family: 'AmazonEmber';
+    src: url('./font/AmazonEmber_Rg.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'AmazonEmber';
+    src: url('./font/AmazonEmber_Bd.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+  }
   body {
-    font-family: "Inter", sans-serif;
+    font-family: "AmazonEmber", "Inter",  sans-serif;
   }
   #divPontos::-webkit-scrollbar {
     display: none;
@@ -37,23 +50,26 @@
 <body class="bg-zinc-900 flex flex-col items-center justify-center min-h-screen gap-2">
   <div class="w-full max-w-xs mx-auto gap-2 flex items-center">
     <input class="w-full max-w-xs py-3 px-4 bg-zinc-300 rounded-lg outline-none text-lg hover:bg-zinc-100 transition"
-      type="text" id="name" placeholder="Nome" maxlength="20"/>
+      type="text" id="name" placeholder="Nome" maxlength="20" spellcheck="false"/>
     <input class="w-24 max-w-xs py-3 px-4 bg-zinc-300 rounded-lg outline-none text-lg hover:bg-zinc-100 transition"
-      type="number" id="digits" inputmode="numeric" pattern="[0-9]*" placeholder="3 Digits" maxlength="3" />
+      type="number" id="digits" inputmode="numeric" pattern="[0-9]*" placeholder="id" maxlength="3" />
   </div>
   <div class="w-full max-w-xs flex flex-col">
     <button id="registerBtn"
-      class="w-full py-3 bg-blue-600 text-white rounded-lg shadow-lg text-lg font-semibold hover:bg-blue-700 transition">
+      class="w-full py-3 bg-blue-600 text-white rounded-lg shadow-lg text-lg font-semibold hover:bg-blue-700 transition data-[isLoading='true']:cursor-not-allowed data-[isLoading='true']:opacity-50">
       Registrar
     </button>
-    <div id="version" class="mt-1 text-right text-white text-xs opacity-20">v1.2</div>
+    <div id="version" class="mt-1 text-right text-white text-xs opacity-20">v1.3</div>
   </div>
   <div id="divPontos" class="w-full text-white h-32 max-w-xs mt-2 overflow-y-auto" ></div>
 
+  <script type="module">
+      import { BUTTON_WITH_LOADING, toastSuccess, toastError, toastInfo } from './vars.js';
 
-  <script>
       const name = localStorage.getItem('000_name');
       const digits = localStorage.getItem('000_digits');
+
+      /* JAVASCRIPT HTML MANIPULATION */
 
       if(name && digits) {
         document.getElementById('name').value = name;
@@ -66,14 +82,7 @@
         const digits = document.getElementById('digits').value.trim();
 
         if (!name || !digits || digits.length !== 3 || isNaN(digits)) {
-            Toastify({
-              text: "Faltou preencher os campos. ;)",
-              className: "rounded-lg",
-              duration: 3000,
-              gravity: "top",
-              position: "center",
-              backgroundColor: "#f48d2c",
-            }).showToast();
+            toastInfo("Preencha todos os campos corretamente.");
           return;
         }
 
@@ -85,12 +94,9 @@
           day: '2-digit'
         });
 
-        btn.innerHTML = `<svg class="animate-spin h-5 w-5 mr-2 inline-block text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
-                          </svg> Registrando...`;
+        btn.innerHTML = BUTTON_WITH_LOADING;
         btn.disabled = true;
-        btn.classList.add('opacity-50', 'cursor-not-allowed');
+        btn.setAttribute('data-isLoading', 'true');
         try {
           const response = await axios.post('https://t6d9wao8qd.execute-api.us-east-1.amazonaws.com/register', {
             PK: name,
@@ -106,38 +112,17 @@
           });
 
           if (response.status === 200 || response.status === 201) {
-              Toastify({
-                text: "Registrado com sucesso!",
-                className: "rounded-lg",
-                duration: 3000,
-                gravity: "top",
-                position: "center",
-                backgroundColor: "#22c55e",
-              }).showToast();
+            toastSuccess("Registro realizado com sucesso!");
             atualizarTabelaPontos(name, digits);
           } else {
-            Toastify({
-              text: "Erro ao registrar.",
-              className: "rounded-lg",
-              duration: 3000,
-              gravity: "top",
-              position: "center",
-              backgroundColor: "#ef4444",
-            }).showToast();
+            toastError("Erro ao registrar. Tente novamente.");
           }
         } catch (error) {
-            Toastify({
-              text: "Erro de comunicação.",
-              className: "rounded-lg",
-              duration: 3000,
-              gravity: "top",
-              position: "center",
-              backgroundColor: "#ef4444",
-            }).showToast();
+            toastError("Erro de comunicação.");
         } finally {
           btn.innerHTML = 'Registrar';
           btn.disabled = false;
-          btn.classList.remove('opacity-50', 'cursor-not-allowed');
+          btn.setAttribute('data-isLoading', 'false');
           localStorage.setItem('000_name', name);
           localStorage.setItem('000_digits', digits);
         }
@@ -165,7 +150,7 @@
         const [db, mb, yb] = b.split('/').map(Number);
         return new Date(yb, mb - 1, db) - new Date(ya, ma - 1, da);
       }).forEach(date => {
-        html += `<div class="text-center mb-1 text-lg font-bold tracking-widest">${date}</div>`;
+        html += `<div class="text-center mb-1 text-lg font-bold tracking-widest text-amber-600">${date}</div>`;
         html += `<div class="flex justify-between items-center mb-2">`;
         porData[date]
           .sort() // Ordena horários
@@ -190,19 +175,13 @@
         const pontos = data.pontos || [];
         renderTabelaPontos(pontos);
       } catch (error) {
-        Toastify({
-          text: "Erro de comunicação.",
-          className: "rounded-lg",
-          duration: 3000,
-          gravity: "top",
-          position: "center",
-          backgroundColor: "#ef4444",
-        }).showToast();
+        toastError("Erro de comunicação.");
         console.error('Erro ao buscar registros:', error);
       }
     }
+    const isLocal = window.location.href.includes('127.0.0.1') || window.location.href.includes('localhost');
 
-    if(name && digits) {
+    if(name && digits && !isLocal) {
       atualizarTabelaPontos(name, digits);
     }
   </script>

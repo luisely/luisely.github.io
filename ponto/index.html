@@ -165,8 +165,11 @@
     }
 
     async function getPontos(name, digits) {
-      const response = await axios.get(`https://t6d9wao8qd.execute-api.us-east-1.amazonaws.com/${name}/${digits}`);
-      return response.data;
+      const data = await fetch(`https://t6d9wao8qd.execute-api.us-east-1.amazonaws.com/getPontos/${name}/${digits}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+      })
+      return data.json();
     }
 
     // Função para buscar e atualizar a tabela

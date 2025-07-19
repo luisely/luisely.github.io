@@ -60,7 +60,7 @@
         class="w-full py-3 bg-blue-600 text-white rounded-lg shadow-lg text-lg font-semibold hover:bg-blue-700 transition data-[isLoading='true']:cursor-not-allowed data-[isLoading='true']:opacity-50">
         Registrar
       </button>
-      <div id="version" class="mt-1 text-right text-white text-xs opacity-20">v1.3</div>
+      <div id="version" class="mt-1 text-right text-white text-xs opacity-20">v1.4</div>
       
     </div>
     <div id="divPontos" class="w-full text-white h-32 max-w-xs mt-2 overflow-y-auto" ></div>
@@ -123,6 +123,7 @@
           }
         } catch (error) {
             toastError("Erro de comunicação.");
+            console.error('Erro ao buscar registros:', error);
         } finally {
           btn.innerHTML = 'Registrar';
           btn.disabled = false;
@@ -183,7 +184,6 @@
         console.error('Erro ao buscar registros:', error);
       }
     }
-    const isLocal = window.location.href.includes('127.0.0.1') || window.location.href.includes('localhost');
 
     if(name && digits ) {
       atualizarTabelaPontos(name, digits);

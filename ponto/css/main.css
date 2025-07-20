@@ -1,0 +1,22 @@
+  @font-face {
+    font-family: 'AmazonEmber';
+    src: url('../font/AmazonEmber_Rg.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'AmazonEmber';
+    src: url('../font/AmazonEmber_Bd.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+  }
+  body {
+    font-family: "AmazonEmber", "Inter",  sans-serif;
+  }
+  #divPontos::-webkit-scrollbar {
+    display: none;
+  }
+  #divPontos {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;     /* Firefox */
+  }

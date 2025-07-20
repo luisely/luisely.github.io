@@ -12,43 +12,22 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  <link rel="stylesheet" type="text/css" href="./css/main.css">
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
     rel="stylesheet">
-  <title>Registrar</title>
+ 
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
   <script type="module" src="vars.js"></script>
   <script type="module" src="axios.js"></script>
+  
+  <title>Registrar</title>
 </head>
-<style>
-  @font-face {
-    font-family: 'AmazonEmber';
-    src: url('./font/AmazonEmber_Rg.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-  }
-  @font-face {
-    font-family: 'AmazonEmber';
-    src: url('./font/AmazonEmber_Bd.ttf') format('truetype');
-    font-weight: bold;
-    font-style: normal;
-  }
-  body {
-    font-family: "AmazonEmber", "Inter",  sans-serif;
-  }
-  #divPontos::-webkit-scrollbar {
-    display: none;
-  }
-  #divPontos {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;     /* Firefox */
-  }
-</style>
 
-<body class="bg-zinc-900 w-screen h-screen flex items-center justify-center">
-    <div class="flex flex-col items-center justify-center gap-2 h-full w-full max-w-md">
+<body class="bg-neutral-900 w-screen h-screen flex items-center justify-center">
+  <div class="flex flex-col items-center justify-center gap-2 h-full w-full max-w-md">
     <div class="w-full max-w-xs mx-auto gap-2 flex items-center">
       <input class="w-full max-w-xs py-3 px-4 bg-zinc-300 rounded-lg outline-none text-lg hover:bg-zinc-100 transition"
         type="text" id="name" placeholder="Nome" maxlength="20" spellcheck="false"/>

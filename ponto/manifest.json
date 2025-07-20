@@ -3,8 +3,8 @@
   "short_name": "Registrar",
   "start_url": ".",
   "display": "standalone",
-  "background_color": "#27272a",
-  "theme_color": "#27272a",
+  "background_color": "#171717",
+  "theme_color": "#171717",
   "icons": [
     {
       "src": "180.png",

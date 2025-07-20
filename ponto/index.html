@@ -12,12 +12,15 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.4/dist/css/datepicker.min.css">
   <link rel="stylesheet" type="text/css" href="./css/main.css">
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
     rel="stylesheet">
  
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.4/dist/js/datepicker-full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.4/dist/js/locales/pt.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
   <script type="module" src="vars.js"></script>
@@ -41,9 +44,9 @@
     <!-- INPUTS MANUAL -->
     <div id="manualInputs" class="w-full max-w-xs mx-auto gap-2 flex items-center data-[isVisible='false']:hidden" data-isVisible="false">
       <input class="w-48 max-w-xs py-3 px-4 bg-zinc-300 rounded-lg outline-none text-lg hover:bg-zinc-100 transition"
-        type="date" id="date" placeholder="Data"/>
-      <input class="w-full max-w-xs py-3 px-[14px] bg-zinc-300 rounded-lg outline-none text-lg hover:bg-zinc-100 transition"
-        type="time" id="time" placeholder="Hora" maxlength="3" />
+        type="text" id="date" placeholder="Data" name="date" inputmode='none'/>
+      <input class="w-full max-w-xs py-3 px-[14px] bg-zinc-300 rounded-lg outline-none text-lg  hover:bg-zinc-100 transition"
+        type="time" id="time" placeholder="Hora" maxlength="3"  />
     </div>
 
     <!-- BUTTONS -->
@@ -54,7 +57,7 @@
       </button>
       <div class="flex justify-between items-center mt-2">
         <div ><a href="#" id="manualLink" class="text-white hover:text-amber-600">Manual</a></div>
-        <div id="version" class="mt-1 text-right text-white text-xs opacity-20">v1.5</div>
+        <div id="version" class="mt-1 text-right text-white text-xs opacity-20">v1.6</div>
       </div>
       
     </div>
@@ -86,14 +89,21 @@
         hour12: false
       });
 
+      const elem = document.querySelector('input[name="date"]');
+      const datepicker = new Datepicker(elem, {
+        autoHide: true,
+        language: 'pt',
+        format: 'dd/mm/yyyy',
 
+      });
+      datepicker.setDate(new Date());
 
       document.getElementById('registerBtn').addEventListener('click', async () => {
 
         const btn = document.getElementById('registerBtn');
         const name = document.getElementById('name').value.trim().toLowerCase();
         const digits = document.getElementById('digits').value.trim();
-        const dateFromInput = document.getElementById('date').value.split('-').reverse().join('/');
+        const dateFromInput = document.getElementById('date').value;
         const timeFromInput = document.getElementById('time').value;
 
         if (!name || !digits || digits.length !== 3 || isNaN(digits)) {

@@ -208,6 +208,11 @@
       } catch (error) {
         toastError("Erro de comunicação.");
         console.error('Erro ao buscar registros:', error);
+
+        if(!cachedData) {
+          const tabelaDiv = document.getElementById('divPontos');
+          tabelaDiv.innerHTML = '';
+        }
       }
     }
 

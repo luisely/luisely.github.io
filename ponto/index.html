@@ -197,11 +197,7 @@
       }
 
       if (confirm(`Deseja excluir o registro de ${date} às ${time}?`)) {
-        api.delete(`delete/${name}/${digits}/record?date=${date}&time=${time}`, { 
-          headers: {
-            'Content-Type': 'text/plain; charset=utf-8' // Use sua chave de API aqui
-          }
-        })
+        api.delete(`delete/${name}/${digits}/record?date=${date}&time=${time}`)
           .then(response => {
             if (response.status === 200) {
               toastSuccess("Registro excluído com sucesso!");

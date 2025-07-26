@@ -199,7 +199,6 @@
       if (confirm(`Deseja excluir o registro de ${date} às ${time}?`)) {
         api.delete(`delete/${name}/${digits}/record?date=${date}&time=${time}`, { 
           headers: {
-            'x-api-key': '0967fedce008d39343df18f5fd13a7db604c0cda',
             'Content-Type': 'text/plain; charset=utf-8' // Use sua chave de API aqui
           }
         })

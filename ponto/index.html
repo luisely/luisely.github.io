@@ -197,7 +197,12 @@
       }
 
       if (confirm(`Deseja excluir o registro de ${date} às ${time}?`)) {
-        api.delete(`delete/${name}/${digits}/record?date=${date}&time=${time}`)
+        api.delete(`delete/${name}/${digits}/record?date=${date}&time=${time}`, { 
+          headers: {
+            'x-api-key': '0967fedce008d39343df18f5fd13a7db604c0cda',
+            'Content-Type': 'text/plain; charset=utf-8' // Use sua chave de API aqui
+          }
+        })
           .then(response => {
             if (response.status === 200) {
               toastSuccess("Registro excluído com sucesso!");
@@ -214,12 +219,7 @@
     }
 
     async function getPontos(name, digits) {
-      const response = await api.get(`getPontos/${name}/${digits}`, {
-        headers: {
-          'x-api-key': '0967fedce008d39343df18f5fd13a7db604c0cda',
-          'Content-Type': 'text/plain; charset=utf-8' // Use sua chave de API aqui
-        }
-      });
+      const response = await api.get(`getPontos/${name}/${digits}`);
       return response.data;
     }
 

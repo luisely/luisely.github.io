@@ -25,7 +25,7 @@
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
   <script type="module" src="vars.js"></script>
   <script type="module" src="axios.js"></script>
-  
+
   <title>Registrar</title>
 </head>
 
@@ -55,7 +55,7 @@
         Registrar
       </button>
       <div class="flex justify-end">
-        <div id="version" class="mt-1 text-right text-white text-xs opacity-20">v1.7</div>
+        <div id="version" class="mt-1 text-right text-white text-xs opacity-20">v1.8</div>
       </div>
       
     </div>
@@ -167,12 +167,55 @@
         porData[date]
           .sort() // Ordena horários
           .forEach(time => {
-            html += `<div class="text-md mx-2">• ${time}</div>`;
+            html += `<div class="text-md mx-2">• <a href="#" class="link-delete" data-record="${date}&${time}");">${time}</a></div>`;
           });
         html += `</div>`;
       });
 
       tabelaDiv.innerHTML = html;
+    }
+
+    const tabelaDiv = document.getElementById('divPontos');
+
+    tabelaDiv.addEventListener('click', (event) => {
+        const linkClicado = event.target.closest('.link-delete');
+
+        if (linkClicado) {
+            event.preventDefault();
+            deleteRecord(linkClicado.dataset.record);
+        }
+    });
+
+    function deleteRecord(record) {
+      const [date, time] = record.split('&');
+      const name = localStorage.getItem('000_name');
+      const digits = localStorage.getItem('000_digits');
+
+      if (!name || !digits) {
+        toastInfo("Preencha todos os campos corretamente.");
+        return;
+      }
+
+      if (confirm(`Deseja excluir o registro de ${date} às ${time}?`)) {
+        api.delete(`delete/${name}/${digits}/record?date=${date}&time=${time}`, { 
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'x-api-key': '0967fedce008d39343df18f5fd13a7db604c0cda'
+          }
+        })
+          .then(response => {
+            if (response.status === 200) {
+              toastSuccess("Registro excluído com sucesso!");
+              atualizarTabelaPontos(name, digits);
+            } else {
+              toastError("Erro ao excluir o registro.");
+            }
+          })
+          .catch(error => {
+            toastError("Erro de comunicação.");
+            console.error('Erro ao excluir registro:', error);
+          });
+      }
     }
 
     async function getPontos(name, digits) {

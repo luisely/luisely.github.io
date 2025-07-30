@@ -65,7 +65,7 @@
 
       <div class="w-full max-w-xs mx-auto flex items-center -mt-[1px]">
         <input 
-          class="w-48 max-w-xs py-2 px-4 bg-[#d9d5c3] outline-none border border-[#3d3940] text-lg  text-[#3d3940] transition hover:brightness-110"
+          class="w-48 max-w-xs py-2 px-4 bg-[#d9d5c3] outline-none border border-[#3d3940] text-lg  text-[#3d3940] rounded-bl transition hover:brightness-110"
           type="text" 
           id="date" 
           placeholder="Data" 
@@ -83,11 +83,21 @@
     </div>
 
     <!-- BUTTONS -->
-    <div class="w-full max-w-xs flex flex-col">
-      <button id="registerBtn"
-        class="py-3
+    <div class="w-full max-w-xs flex justify-between">
+      <div class="flex flex-col w-48 max-w-xs">
+        <div id="version" class="mt-1 h-4 text-white text-xs opacity-20">
+         
+        </div>
+      
+        <div class="flex w-full">
+          <div id="version" class="-mb-7 py-1 px-[9px] w-24 text-[#d9d5c3] rounded-t-md text-xs bg-[#3d3940] tracking-wider ">Marcações</div>
+        </div>
+      </div>
+      <button 
+        id="registerBtn"
+        class="w-[129px] py-2
              text-[#d9d5c3]
-              text-lg
+              text-base
              bg-[#3d3940] rounded-b
               font-semibold tracking-wide
               transform transition-all duration-150
@@ -96,9 +106,7 @@
       >
         Registrar
       </button>
-      <div class="flex justify-end">
-        <div id="version" class="mt-1 text-right text-white text-xs opacity-20">v1.9</div>
-      </div>
+
       
     </div>
     <div id="divPontos" class="w-full flex-1 text-white max-w-xs mt-1 mb-10 overflow-y-auto"></div>

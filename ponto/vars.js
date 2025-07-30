@@ -18,7 +18,7 @@ export const toastError = (message) => (Toastify({
               duration: 3000,
               gravity: "top",
               position: "center",
-              backgroundColor: "#ef4444",
+              backgroundColor: "#8b2c2c",
             }).showToast());
 
 export const toastInfo = (message) => (Toastify({

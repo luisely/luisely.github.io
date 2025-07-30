@@ -26,40 +26,82 @@
   <script type="module" src="vars.js"></script>
   <script type="module" src="axios.js"></script>
 
+  <style>
+    input {
+      -webkit-appearance: none;
+      appearance: none;
+      border-radius: 0;
+    }
+  </style>
+
   <title>Registrar</title>
 </head>
 
-<body class="bg-neutral-900 w-screen h-screen flex items-center justify-center">
-  <div class="flex flex-col items-center justify-center gap-2 h-full w-full max-w-xs">
+<body class="bg-[#1f1f1f] w-screen h-screen flex items-center justify-center">
+  <div class="flex flex-col items-center justify-center h-full w-full max-w-xs">
     <div class="w-full mt-10"></div>
 
     <!-- INPUTS USERS DATA -->
-    <div class="w-full max-w-xs mx-auto gap-2 flex items-center">
-      <input class="w-48 max-w-xs py-3 px-4 bg-zinc-300 rounded-lg outline-none text-lg hover:bg-zinc-100 transition"
-        type="text" id="name" placeholder="Nome" maxlength="20" spellcheck="false"/>
-      <input class="w-full max-w-xs py-3 px-4 bg-zinc-300 rounded-lg outline-none text-lg hover:bg-zinc-100 transition"
-        type="number" id="digits" inputmode="numeric" pattern="[0-9]*" placeholder="id" maxlength="3" />
-    </div>
+    <div class="">
+      <div class="w-full max-w-xs mx-auto flex items-center">
+        <input
+          class="w-48 max-w-xs py-2 px-4 bg-[#d9d5c3] outline-none rounded-tl border border-[#3d3940] text-lg text-[#3d3940] transition hover:brightness-110"
+          type="text" 
+          id="name" 
+          placeholder="Nome" 
+          maxlength="20" 
+          spellcheck="false"
+        />
+        <input 
+          id="digits"
+          class="w-full max-w-xs -ml-[1px] py-2 rounded-tr text-center bg-[#d9d5c3] outline-none border border-[#3d3940] text-lg text-[#3d3940] transition hover:brightness-110"
+          inputmode="numeric" 
+          pattern="[0-9]*" 
+          placeholder="id" 
+          maxlength="3" 
+          type="number" 
+        />
+      </div>
 
-    <div class="w-full max-w-xs mx-auto gap-2 flex items-center">
-      <input class="w-48 max-w-xs py-3 px-4 bg-zinc-300 rounded-lg outline-none text-lg hover:bg-zinc-100 transition"
-        type="text" id="date" placeholder="Data" name="date" inputmode='none'/>
-      <input class="w-full max-w-xs py-3 px-[14px] bg-zinc-300 rounded-lg outline-none text-lg  hover:bg-zinc-100 transition"
-        type="time" id="time" placeholder="Hora" maxlength="3"  />
+      <div class="w-full max-w-xs mx-auto flex items-center -mt-[1px]">
+        <input 
+          class="w-48 max-w-xs py-2 px-4 bg-[#d9d5c3] outline-none border border-[#3d3940] text-lg  text-[#3d3940] transition hover:brightness-110"
+          type="text" 
+          id="date" 
+          placeholder="Data" 
+          name="date" 
+          inputmode='none'
+        />
+        <input 
+          class="w-full max-w-xs max-h-[46px] -ml-[1px] py-2 px-4 bg-[#d9d5c3] outline-none  border border-[#3d3940] text-lg  text-[#3d3940] transition hover:brightness-110"
+          type="time" 
+          id="time" 
+          placeholder="Hora" 
+          maxlength="3"  
+        />
+      </div>
     </div>
 
     <!-- BUTTONS -->
     <div class="w-full max-w-xs flex flex-col">
       <button id="registerBtn"
-        class="w-full py-3 bg-blue-600 text-white rounded-lg shadow-lg text-lg font-semibold hover:bg-blue-700 transition data-[isLoading='true']:cursor-not-allowed data-[isLoading='true']:opacity-50">
+        class="py-3
+             text-[#d9d5c3]
+              text-lg
+             bg-[#3d3940] rounded-b
+              font-semibold tracking-wide
+              transform transition-all duration-150
+              hover:brightness-110
+              data-[isLoading='true']:cursor-not-allowed data-[isLoading='true']:opacity-50"
+      >
         Registrar
       </button>
       <div class="flex justify-end">
-        <div id="version" class="mt-1 text-right text-white text-xs opacity-20">v1.8</div>
+        <div id="version" class="mt-1 text-right text-white text-xs opacity-20">v1.9</div>
       </div>
       
     </div>
-    <div id="divPontos" class="w-full flex-1 text-white max-w-xs mb-10 overflow-y-auto"></div>
+    <div id="divPontos" class="w-full flex-1 text-white max-w-xs mt-1 mb-10 overflow-y-auto"></div>
   </div>
 
   <script type="module">
@@ -162,13 +204,15 @@
         const [db, mb, yb] = b.split('/').map(Number);
         return new Date(yb, mb - 1, db) - new Date(ya, ma - 1, da);
       }).forEach(date => {
-        html += `<div class="text-center mb-1 text-lg font-bold tracking-widest text-amber-600">${date}</div>`;
-        html += `<div class="flex justify-between items-center mb-2">`;
+        html += `<div class="p-2 border-l border-r -mb-[1px] bg-[#d9d5c3] border-[#3d3940] first:rounded-t first:border-t last:rounded-b last:border-b">`
+        html += `<div class="text-center text-lg font-bold tracking-wider rounded-t text-[#d9d5c3] bg-[#3d3940] border border-[#3d3940]">${date}</div>`;
+        html += `<div class="flex justify-between items-center px-1 py-1 mb-1 border-b border-l border-r rounded-b border-[#3d3940]">`;
         porData[date]
           .sort() // Ordena horários
           .forEach(time => {
-            html += `<div class="text-md mx-2">• <a href="#" class="link-delete" data-record="${date}&${time}");">${time}</a></div>`;
+            html += `<div class="text-md mx-2"><a href="#" class="link-delete hover:text-[#8b2c2c] text-[#3d3940]" data-record="${date}&${time}");">• ${time}</a></div>`;
           });
+        html += `</div>`;
         html += `</div>`;
       });
 

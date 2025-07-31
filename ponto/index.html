@@ -23,8 +23,9 @@
   <script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.4/dist/js/locales/pt.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-  <script type="module" src="vars2.js"></script>
+  <script type="module" src="vars3.js"></script>
   <script type="module" src="axios.js"></script>
+  
 
   <style>
     input {
@@ -37,15 +38,15 @@
   <title>Registrar</title>
 </head>
 
-<body class="bg-[#1f1f1f] w-screen h-screen flex items-center justify-center">
+<body class="bg-[url('./css/fundo2.jpg')] bg-center bg-cover w-dvw h-dvh flex items-center justify-center">
   <div class="flex flex-col items-center justify-center h-full w-full max-w-xs">
     <div class="w-full mt-10"></div>
 
     <!-- INPUTS USERS DATA -->
     <div class="">
-      <div class="w-full max-w-xs mx-auto flex items-center">
+      <div class="w-full max-w-xs mx-auto flex border-b border-l border-t border-r border-[#3d3940] rounded-t-md border-opacity-35 items-center">
         <input
-          class="w-48 max-w-xs py-2 px-4 bg-[#d9d5c3] outline-none rounded-tl border border-[#3d3940] text-lg text-[#3d3940] transition hover:brightness-110"
+          class="w-48 max-w-xs py-2 px-4 bg-[#d9d5c3] bg-opacity-35 outline-none rounded-tl-md border-r border-opacity-35 border-[#3d3940] text-lg transition hover:brightness-110"
           type="text" 
           id="name" 
           placeholder="Nome" 
@@ -54,7 +55,7 @@
         />
         <input 
           id="digits"
-          class="w-full max-w-xs -ml-[1px] py-2 rounded-tr text-center bg-[#d9d5c3] outline-none border border-[#3d3940] text-lg text-[#3d3940] transition hover:brightness-110"
+          class="w-full max-w-xs py-2 rounded-tr text-center bg-[#d9d5c3] bg-opacity-35 outline-none  text-lg transition hover:brightness-110"
           inputmode="numeric" 
           pattern="[0-9]*" 
           placeholder="id" 
@@ -63,9 +64,9 @@
         />
       </div>
 
-      <div class="w-full max-w-xs mx-auto flex items-center -mt-[1px]">
+      <div class="w-full max-w-xs mx-auto flex items-center border-b border-l border-r border-opacity-35 border-[#3d3940] ">
         <input 
-          class="w-48 max-w-xs py-2 px-4 bg-[#d9d5c3] outline-none border border-[#3d3940] text-lg  text-[#3d3940] rounded-bl transition hover:brightness-110"
+          class="w-48 h-[46px] max-w-xs py-2 px-4 bg-[#d9d5c3] bg-opacity-35 border-r border-[#3d3940] border-opacity-35 outline-none text-lg transition hover:brightness-110"
           type="text" 
           id="date" 
           placeholder="Data" 
@@ -73,7 +74,7 @@
           inputmode='none'
         />
         <input 
-          class="w-full max-w-xs max-h-[46px] -ml-[1px] py-2 px-4 bg-[#d9d5c3] outline-none  border border-[#3d3940] text-lg  text-[#3d3940] transition hover:brightness-110"
+          class="w-full max-w-xs py-2 px-4 bg-[#d9d5c3] bg-opacity-35 outline-none text-lg transition hover:brightness-110"
           type="time" 
           id="time" 
           placeholder="Hora" 
@@ -84,21 +85,21 @@
 
     <!-- BUTTONS -->
     <div class="w-full max-w-xs flex justify-between">
-      <div class="flex flex-col w-48 max-w-xs">
-        <div id="version" class="mt-1 h-4 text-white text-xs opacity-20">
+       <!-- <div class="flex flex-col w-48 max-w-xs">
+       <div id="version" class="mt-1 h-4 text-white text-xs opacity-20">
          
         </div>
       
         <div class="flex w-full">
-          <div id="version" class="-mb-7 py-1 px-[9px] w-24 text-[#d9d5c3] rounded-t-md text-xs bg-[#3d3940] tracking-wider ">Marcações</div>
-        </div>
-      </div>
+          <div id="version" class="-mb-7 py-1 px-[9px] w-24 text-[#d9d5c3] rounded-t-md text-xs bg-[#3d3940] bg-opacity-55 tracking-wider hidden">Marcações</div>
+        </div> 
+      </div>-->
       <button 
         id="registerBtn"
-        class="w-[129px] py-2
+        class="w-full py-2
              text-[#d9d5c3]
-              text-base
-             bg-[#3d3940] rounded-b
+              text-lg
+             bg-[#3d3940] bg-opacity-65  rounded-b
               font-semibold tracking-wide
               transform transition-all duration-150
               hover:brightness-110
@@ -109,11 +110,11 @@
 
       
     </div>
-    <div id="divPontos" class="w-full flex-1 text-white max-w-xs mt-1 mb-10 overflow-y-auto"></div>
+    <div id="divPontos" class="w-full flex-1 text-white max-w-xs mt-1 mb-10 overflow-y-auto "></div>
   </div>
 
   <script type="module">
-      import { BUTTON_WITH_LOADING, toastSuccess, toastError, toastInfo } from './vars2.js';
+      import { BUTTON_WITH_LOADING, toastSuccess, toastError, toastInfo } from './vars3.js';
       import { api } from './axios.js';
 
       const name = localStorage.getItem('000_name');
@@ -212,13 +213,13 @@
         const [db, mb, yb] = b.split('/').map(Number);
         return new Date(yb, mb - 1, db) - new Date(ya, ma - 1, da);
       }).forEach(date => {
-        html += `<div class="p-2 border-l border-r -mb-[1px] bg-[#d9d5c3] border-[#3d3940] first:rounded-t first:border-t last:rounded-b last:border-b">`
-        html += `<div class="text-center text-lg font-bold tracking-wider rounded-t text-[#d9d5c3] bg-[#3d3940] border border-[#3d3940]">${date}</div>`;
-        html += `<div class="flex justify-between items-center px-1 py-1 mb-1 border-b border-l border-r rounded-b border-[#3d3940]">`;
+        html += `<div class="p-2 border-l border-r bg-[#d9d5c3] border-[#3d3940] border-opacity-35 first:rounded-t first:border-t last:rounded-b last:border-b bg-opacity-35">`
+        html += `<div class="text-center text-lg font-bold tracking-wider rounded-t text-[#d9d5c3] bg-[#3d3940] border border-[#3d3940] border-opacity-35 text-[#d9d5c3] bg-opacity-75">${date}</div>`;
+        html += `<div class="flex justify-between items-center px-1 py-1 mb-1 border-b border-l border-r rounded-b border-[#3d3940] border-opacity-35">`;
         porData[date]
           .sort() // Ordena horários
           .forEach(time => {
-            html += `<div class="text-md mx-2"><a href="#" class="link-delete hover:text-[#8b2c2c] text-[#3d3940]" data-record="${date}&${time}");">• ${time}</a></div>`;
+            html += `<div class="text-md mx-2"><a href="#" class="link-delete hover:text-[#8b2c2c] text-zinc-800" data-record="${date}&${time}");">• ${time}</a></div>`;
           });
         html += `</div>`;
         html += `</div>`;

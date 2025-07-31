@@ -5,7 +5,7 @@ export const BUTTON_WITH_LOADING = `<svg class="animate-spin h-5 w-5 mr-2 inline
 
 export const toastSuccess = (message) => (Toastify({
                 text: message,
-                className: "rounded-lg",
+                className: "rounded-md text-sm py-2 px-2",
                 duration: 3000,
                 gravity: "top",
                 position: "center",
@@ -14,7 +14,7 @@ export const toastSuccess = (message) => (Toastify({
 
 export const toastError = (message) => (Toastify({
               text: message,
-              className: "rounded-lg",
+              className: "rounded-md text-sm py-2 px-2",
               duration: 3000,
               gravity: "top",
               position: "center",
@@ -23,7 +23,7 @@ export const toastError = (message) => (Toastify({
 
 export const toastInfo = (message) => (Toastify({
               text: message,
-              className: "rounded-lg",
+              className: "rounded-md text-sm py-2 px-2",
               duration: 3000,
               gravity: "top",
               position: "center",

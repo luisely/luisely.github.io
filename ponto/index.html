@@ -46,7 +46,7 @@
     <div class="">
       <div class="w-full max-w-xs mx-auto flex border-b border-l border-t border-r border-[#3d3940] rounded-t-md border-opacity-35 items-center">
         <input
-          class="w-48 max-w-xs py-2 px-4 bg-[#d9d5c3] bg-opacity-35 outline-none rounded-tl-md border-r border-opacity-35 border-[#3d3940] text-lg transition hover:brightness-110"
+          class="w-48 max-w-xs py-2 px-4 bg-[#d9d5c3] bg-opacity-35 outline-none rounded-tl-md border-r border-opacity-35 border-[#3d3940] backdrop-blur-md text-lg transition hover:brightness-110"
           type="text" 
           id="name" 
           placeholder="Nome" 
@@ -55,7 +55,7 @@
         />
         <input 
           id="digits"
-          class="w-full max-w-xs py-2 rounded-tr text-center bg-[#d9d5c3] bg-opacity-35 outline-none  text-lg transition hover:brightness-110"
+          class="w-full max-w-xs py-2 rounded-tr text-center bg-[#d9d5c3] bg-opacity-35 backdrop-blur-md outline-none  text-lg transition hover:brightness-110"
           inputmode="numeric" 
           pattern="[0-9]*" 
           placeholder="id" 
@@ -64,7 +64,7 @@
         />
       </div>
 
-      <div class="w-full max-w-xs mx-auto flex items-center border-b border-l border-r border-opacity-35 border-[#3d3940] ">
+      <div class="w-full max-w-xs mx-auto flex items-center border-b border-l border-r border-opacity-35 border-[#3d3940] backdrop-blur-md">
         <input 
           class="w-48 h-[46px] max-w-xs py-2 px-4 bg-[#d9d5c3] bg-opacity-35 border-r border-[#3d3940] border-opacity-35 outline-none text-lg transition hover:brightness-110"
           type="text" 
@@ -74,7 +74,7 @@
           inputmode='none'
         />
         <input 
-          class="w-full max-w-xs py-2 px-4 bg-[#d9d5c3] bg-opacity-35 outline-none text-lg transition hover:brightness-110"
+          class="w-full max-w-xs py-2 px-4 bg-[#d9d5c3] bg-opacity-35 backdrop-blur-md outline-none text-lg transition hover:brightness-110"
           type="time" 
           id="time" 
           placeholder="Hora" 
@@ -97,12 +97,14 @@
       <button 
         id="registerBtn"
         class="w-full py-2
-             text-[#d9d5c3]
+             text-[#3d3940]
               text-lg
-             bg-[#3d3940] bg-opacity-65  rounded-b
+             bg-[#3d3940] bg-opacity-15  rounded-b
               font-semibold tracking-wide
               transform transition-all duration-150
               hover:brightness-110
+              backdrop-blur-md -mt-[1px]
+               border-[#3d3940] border-opacity-35 border
               data-[isLoading='true']:cursor-not-allowed data-[isLoading='true']:opacity-50"
       >
         Registrar
@@ -110,7 +112,7 @@
 
       
     </div>
-    <div id="divPontos" class="w-full flex-1 text-white max-w-xs mt-1 mb-10 overflow-y-auto "></div>
+    <div id="divPontos" class="w-full text-white max-w-xs mt-1 mb-10 overflow-y-auto backdrop-blur-md"></div>
   </div>
 
   <script type="module">
@@ -213,8 +215,8 @@
         const [db, mb, yb] = b.split('/').map(Number);
         return new Date(yb, mb - 1, db) - new Date(ya, ma - 1, da);
       }).forEach(date => {
-        html += `<div class="p-2 border-l border-r bg-[#d9d5c3] border-[#3d3940] border-opacity-35 first:rounded-t first:border-t last:rounded-b last:border-b bg-opacity-35">`
-        html += `<div class="text-center text-lg font-bold tracking-wider rounded-t text-[#d9d5c3] bg-[#3d3940] border border-[#3d3940] border-opacity-35 text-[#d9d5c3] bg-opacity-75">${date}</div>`;
+        html += `<div class="p-2 border-l border-r bg-[#d9d5c3] border-[#3d3940] border-opacity-35 first:rounded-t first:border-t last:rounded-b last:border-b bg-opacity-35 ">`
+        html += `<div class="text-center text-lg font-bold tracking-wider rounded-t bg-[#3d3940] border border-[#3d3940] border-opacity-35 text-[#3d3940] bg-opacity-15 ">${date}</div>`;
         html += `<div class="flex justify-between items-center px-1 py-1 mb-1 border-b border-l border-r rounded-b border-[#3d3940] border-opacity-35">`;
         porData[date]
           .sort() // Ordena horários

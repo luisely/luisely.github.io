@@ -14,7 +14,6 @@
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.4/dist/css/datepicker.min.css">
   <link rel="stylesheet" type="text/css" href="./css/main.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
     rel="stylesheet">
@@ -40,11 +39,11 @@
 </head>
 
 <body class="bg-[url('./css/fundo2.jpg')] bg-center bg-cover w-dvw h-dvh flex items-center justify-center py-4">
-  <div class="flex flex-col items-center justify-center h-full w-full max-w-xs mt-2 mb-2">
-    <div id="divPontos" class="w-full text-white max-w-xs overflow-y-auto backdrop-blur-md rounded-t rounded-b"></div>
+  <div class="flex flex-col items-center justify-center h-full w-full max-w-xs">
+    <div class="w-full mt-10"></div>
 
     <!-- INPUTS USERS DATA -->
-    <div class="mt-2">
+    <div class="">
       <div class="w-full max-w-xs mx-auto flex border-b border-l border-t border-r border-[#3d3940] rounded-t-md border-opacity-35 items-center">
         <input
           class="w-48 max-w-xs py-2 px-4 bg-[#d9d5c3] bg-opacity-35 outline-none rounded-tl-md border-r border-opacity-35 border-[#3d3940] backdrop-blur-md text-lg transition hover:brightness-110"
@@ -98,20 +97,16 @@
               backdrop-blur-md -mt-[1px]
                border-[#3d3940] border-opacity-35 border
               data-[isLoading='true']:cursor-not-allowed data-[isLoading='true']:opacity-50"
-      ><i class="fa fa-check" aria-hidden="true"></i> Registrar
+      >
+        Registrar
       </button>
 
       
     </div>
-    
+    <div id="divPontos" class="w-full text-white max-w-xs mt-1 mb-10 overflow-y-auto backdrop-blur-md rounded-t rounded-b"></div>
   </div>
 
   <script type="module">
-
-      document.addEventListener('DOMContentLoaded', function() {
-          const scrollableDiv = document.getElementById('divPontos');
-          scrollableDiv.scrollTop = scrollableDiv.scrollHeight;
-      });
       import { BUTTON_WITH_LOADING, toastSuccess, toastError, toastInfo } from './vars3.js';
       import { api } from './axios.js';
 
@@ -181,7 +176,7 @@
             toastError("Erro de comunicação.");
             console.error('Erro ao buscar registros:', error);
         } finally {
-          btn.innerHTML = '<i class="fa fa-check" aria-hidden="true"></i> Registrar';
+          btn.innerHTML = 'Registrar';
           btn.disabled = false;
           btn.setAttribute('data-isLoading', 'false');
           localStorage.setItem('000_name', name);
@@ -210,7 +205,7 @@
         const [da, ma, ya] = a.split('/').map(Number);
         const [db, mb, yb] = b.split('/').map(Number);
         return new Date(yb, mb - 1, db) - new Date(ya, ma - 1, da);
-      }).reverse().forEach(date => {
+      }).forEach(date => {
         html += `<div class="p-2 border-l border-r bg-[#d9d5c3] border-[#3d3940] border-opacity-35 first:rounded-t first:border-t last:rounded-b last:border-b bg-opacity-35 ">`
         html += `<div class="text-center text-lg font-bold tracking-wider rounded-t bg-[#3d3940] border border-[#3d3940] border-opacity-35 text-[#3d3940] bg-opacity-15 ">${date}</div>`;
         html += `<div class="flex justify-between items-center px-1 py-1 mb-1 border-b border-l border-r rounded-b border-[#3d3940] border-opacity-35">`;

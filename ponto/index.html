@@ -17,7 +17,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
     rel="stylesheet">
-
+ 
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.4/dist/js/datepicker-full.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.4/dist/js/locales/pt.js"></script>
@@ -25,8 +25,7 @@
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
   <script type="module" src="vars3.js"></script>
   <script type="module" src="axios.js"></script>
-  <script type="module" src="./js/cache.js"></script>
-
+  
 
   <style>
     input {
@@ -39,129 +38,150 @@
   <title>Registrar</title>
 </head>
 
-<body class="w-screen h-screen flex items-center justify-center py-2">
+<body class="bg-[url('./css/fundo2.jpg')] bg-center bg-cover w-dvw h-dvh flex items-center justify-center py-4">
   <div class="flex flex-col items-center justify-center h-full w-full max-w-xs">
-    <div class="w-full text-blue-300/10 text-center text-xs tracking-widest"> GRÊMIO FOOT-BALL PORTO ALEGRENSE</div>
+    <div class="w-full"></div>
 
     <!-- INPUTS USERS DATA -->
     <div class="">
-      <div
-        class="w-full max-w-xs mx-auto flex border-b border-l border-t border-r border-black/35 rounded-t-md items-center text-blue-300">
+      <div class="w-full max-w-xs mx-auto flex border-b border-l border-t border-r border-[#3d3940] rounded-t-md border-opacity-35 items-center">
         <input
-          class="w-48 max-w-xs py-2 px-4 bg-[#d9d5c3]/5 outline-none rounded-tl-md border-r border-black/35 backdrop-blur-sm text-lg transition"
-          type="text" id="name" placeholder="Nome" maxlength="20" spellcheck="false" />
-        <input id="digits"
-          class="w-full max-w-xs py-2 rounded-tr text-center bg-[#d9d5c3]/5 backdrop-blur-sm outline-none  text-lg transition"
-          inputmode="numeric" pattern="[0-9]*" placeholder="id" maxlength="3" type="number" />
+          class="w-48 max-w-xs py-2 px-4 bg-[#d9d5c3] bg-opacity-35 outline-none rounded-tl-md border-r border-opacity-35 border-[#3d3940] backdrop-blur-md text-lg transition hover:brightness-110"
+          type="text" 
+          id="name" 
+          placeholder="Nome" 
+          maxlength="20" 
+          spellcheck="false"
+        />
+        <input 
+          id="digits"
+          class="w-full max-w-xs py-2 rounded-tr text-center bg-[#d9d5c3] bg-opacity-35 backdrop-blur-md outline-none  text-lg transition hover:brightness-110"
+          inputmode="numeric" 
+          pattern="[0-9]*" 
+          placeholder="id" 
+          maxlength="3" 
+          type="number" 
+        />
       </div>
 
-      <div class="w-full max-w-xs mx-auto flex items-center border-b border-l border-r border-black/35 text-blue-300">
-        <input
-          class="w-48 h-[46px] max-w-xs py-2 px-4 bg-[#d9d5c3]/5 border-r border-black/35 backdrop-blur-sm outline-none text-lg transition"
-          type="text" id="date" placeholder="Data" name="date" inputmode='none' />
-        <input class="w-full max-w-xs py-2 px-4 bg-[#d9d5c3]/5 backdrop-blur-sm outline-none text-lg transition"
-          type="time" id="time" placeholder="Hora" maxlength="3" />
+      <div class="w-full max-w-xs mx-auto flex items-center border-b border-l border-r border-opacity-35 border-[#3d3940]">
+        <input 
+          class="w-48 h-[46px] max-w-xs py-2 px-4 bg-[#d9d5c3] bg-opacity-35 border-r border-[#3d3940] border-opacity-35 backdrop-blur-md outline-none text-lg transition hover:brightness-110"
+          type="text" 
+          id="date" 
+          placeholder="Data" 
+          name="date" 
+          inputmode='none'
+        />
+        <input 
+          class="w-full max-w-xs py-2 px-4 bg-[#d9d5c3] bg-opacity-35 backdrop-blur-md outline-none text-lg transition hover:brightness-110"
+          type="time" 
+          id="time" 
+          placeholder="Hora" 
+          maxlength="3"  
+        />
       </div>
     </div>
 
     <!-- BUTTONS -->
     <div class="w-full max-w-xs flex justify-between">
-      <button id="registerBtn" class="w-full py-2
-             text-blue-300
+      <button 
+        id="registerBtn"
+        class="w-full py-2
+             text-[#3d3940]
               text-lg
-             bg-[#3d3940]/15 rounded-b
+             bg-[#3d3940] bg-opacity-15  rounded-b
               font-semibold tracking-wide
               transform transition-all duration-150
               hover:brightness-110
               backdrop-blur-md -mt-[1px]
-               border-black/35 border
-              data-[isLoading='true']:cursor-not-allowed data-[isLoading='true']:opacity-50">
+               border-[#3d3940] border-opacity-35 border
+              data-[isLoading='true']:cursor-not-allowed data-[isLoading='true']:opacity-50"
+      >
         Registrar
       </button>
 
-
+      
     </div>
-    <div id="divPontos" class="w-full text-white max-w-xs mt-1 overflow-y-auto backdrop-blur-md rounded-t rounded-b">
-    </div>
+    <div id="divPontos" class="w-full text-white max-w-xs mt-1 overflow-y-auto backdrop-blur-md rounded-t rounded-b"></div>
   </div>
 
   <script type="module">
-    import { BUTTON_WITH_LOADING, toastSuccess, toastError, toastInfo } from './vars3.js';
-    import { getCache, setCache, removeCache } from './js/cache.js';
-    import { api } from './axios.js';
+      import { BUTTON_WITH_LOADING, toastSuccess, toastError, toastInfo } from './vars3.js';
+      import { api } from './axios.js';
 
-    const name = localStorage.getItem('000_name');
-    const digits = localStorage.getItem('000_digits');
+      const name = localStorage.getItem('000_name');
+      const digits = localStorage.getItem('000_digits');
 
-    /* JAVASCRIPT HTML MANIPULATION */
+      /* JAVASCRIPT HTML MANIPULATION */
 
-    if (name && digits) {
-      document.getElementById('name').value = name;
-      document.getElementById('digits').value = digits;
-    }
-    document.getElementById('date').value = new Date().toLocaleDateString('pt-BR', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-    }).split('/').reverse().join('-'); // Formato YYYY-MM-DD para o input date
-
-    document.getElementById('time').value = new Date().toLocaleTimeString('pt-BR', {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false
-    });
-
-    const elem = document.querySelector('input[name="date"]');
-    const datepicker = new Datepicker(elem, {
-      autoHide: true,
-      language: 'pt',
-      format: 'dd/mm/yyyy',
-
-    });
-    datepicker.setDate(new Date());
-
-    document.getElementById('registerBtn').addEventListener('click', async () => {
-
-      const btn = document.getElementById('registerBtn');
-      const name = document.getElementById('name').value.trim().toLowerCase();
-      const digits = document.getElementById('digits').value.trim();
-      const dateFromInput = document.getElementById('date').value;
-      const timeFromInput = document.getElementById('time').value;
-
-      if (!name || !digits || digits.length !== 3 || isNaN(digits)) {
-        toastInfo("Preencha todos os campos corretamente.");
-        return;
+      if(name && digits) {
+        document.getElementById('name').value = name;
+        document.getElementById('digits').value = digits;
       }
+      document.getElementById('date').value = new Date().toLocaleDateString('pt-BR', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+      }).split('/').reverse().join('-'); // Formato YYYY-MM-DD para o input date
 
-      btn.innerHTML = BUTTON_WITH_LOADING;
-      btn.disabled = true;
-      btn.setAttribute('data-isLoading', 'true');
-      try {
-        const response = await api.post('register', {
-          PK: name,
-          SK: digits.toString(),
-          name,
-          cpf3Digits: digits,
-          date: dateFromInput,
-          time: timeFromInput
-        });
+      document.getElementById('time').value = new Date().toLocaleTimeString('pt-BR', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+      });
 
-        if (response.status === 200 || response.status === 201) {
-          toastSuccess("Registro realizado com sucesso!");
-          verificaTipoAtualizacao(name, digits, true);
-        } else {
-          toastError("Erro ao registrar. Tente novamente.");
+      const elem = document.querySelector('input[name="date"]');
+      const datepicker = new Datepicker(elem, {
+        autoHide: true,
+        language: 'pt',
+        format: 'dd/mm/yyyy',
+
+      });
+      datepicker.setDate(new Date());
+
+      document.getElementById('registerBtn').addEventListener('click', async () => {
+
+        const btn = document.getElementById('registerBtn');
+        const name = document.getElementById('name').value.trim().toLowerCase();
+        const digits = document.getElementById('digits').value.trim();
+        const dateFromInput = document.getElementById('date').value;
+        const timeFromInput = document.getElementById('time').value;
+
+        if (!name || !digits || digits.length !== 3 || isNaN(digits)) {
+            toastInfo("Preencha todos os campos corretamente.");
+          return;
         }
-      } catch (error) {
-        toastError("Erro de comunicação.");
-        console.error('Erro ao buscar registros:', error);
-      } finally {
-        btn.innerHTML = 'Registrar';
-        btn.disabled = false;
-        btn.setAttribute('data-isLoading', 'false');
-        localStorage.setItem('000_name', name);
-        localStorage.setItem('000_digits', digits);
-      }
+
+        btn.innerHTML = BUTTON_WITH_LOADING;
+        btn.disabled = true;
+        btn.setAttribute('data-isLoading', 'true');
+        try {
+          const response = await api.post('register', {
+            PK: name,
+            SK: digits.toString(),
+            name,
+            cpf3Digits: digits,
+            date: dateFromInput,
+            time: timeFromInput
+          });
+
+          if (response.status === 200 || response.status === 201) {
+            toastSuccess("Registro realizado com sucesso!");
+            atualizarTabelaPontos(name, digits);
+          } else {
+            toastError("Erro ao registrar. Tente novamente.");
+          }
+        } catch (error) {
+            toastError("Erro de comunicação.");
+            console.error('Erro ao buscar registros:', error);
+        } finally {
+          btn.innerHTML = 'Registrar';
+          btn.disabled = false;
+          btn.setAttribute('data-isLoading', 'false');
+          localStorage.setItem('000_name', name);
+          localStorage.setItem('000_digits', digits);
+        }
     });
 
     function renderTabelaPontos(pontos) {
@@ -186,13 +206,13 @@
         const [db, mb, yb] = b.split('/').map(Number);
         return new Date(yb, mb - 1, db) - new Date(ya, ma - 1, da);
       }).forEach(date => {
-        html += `<div class="p-2 border-l border-r border-black/35 first:rounded-t first:border-t last:rounded-b last:border-b">`
-        html += `<div class="text-center text-lg font-bold tracking-wider rounded-t bg-[#3d3940]/25 border border-[#000]/35 text-black/60">${date}</div>`;
-        html += `<div class="flex justify-between items-center px-1 py-1 mb-1 border-b border-l border-r rounded-b border-[#000]/35">`;
+        html += `<div class="p-2 border-l border-r bg-[#d9d5c3] border-[#3d3940] border-opacity-35 first:rounded-t first:border-t last:rounded-b last:border-b bg-opacity-35 ">`
+        html += `<div class="text-center text-lg font-bold tracking-wider rounded-t bg-[#3d3940] border border-[#3d3940] border-opacity-35 text-[#3d3940] bg-opacity-15 ">${date}</div>`;
+        html += `<div class="flex justify-between items-center px-1 py-1 mb-1 border-b border-l border-r rounded-b border-[#3d3940] border-opacity-35">`;
         porData[date]
           .sort() // Ordena horários
           .forEach(time => {
-            html += `<div class="text-md mx-2"><a href="#" class="link-delete hover:text-white text-blue-300" data-record="${date}&${time}");">• ${time}</a></div>`;
+            html += `<div class="text-md mx-2"><a href="#" class="link-delete hover:text-[#8b2c2c] text-zinc-800" data-record="${date}&${time}");">• ${time}</a></div>`;
           });
         html += `</div>`;
         html += `</div>`;
@@ -204,14 +224,13 @@
     const tabelaDiv = document.getElementById('divPontos');
 
     tabelaDiv.addEventListener('click', (event) => {
-      const linkClicado = event.target.closest('.link-delete');
+        const linkClicado = event.target.closest('.link-delete');
 
-      if (linkClicado) {
-        event.preventDefault();
-        deleteRecord(linkClicado.dataset.record);
-      }
+        if (linkClicado) {
+            event.preventDefault();
+            deleteRecord(linkClicado.dataset.record);
+        }
     });
-
 
     function deleteRecord(record) {
       const [date, time] = record.split('&');
@@ -228,7 +247,7 @@
           .then(response => {
             if (response.status === 200) {
               toastSuccess("Registro excluído com sucesso!");
-              verificaTipoAtualizacao(name, digits, true);
+              atualizarTabelaPontos(name, digits);
             } else {
               toastError("Erro ao excluir o registro.");
             }
@@ -246,61 +265,43 @@
     }
 
     // Função para buscar e atualizar a tabela
-    async function verificaTipoAtualizacao(name, digits, isAnHandle = false) {
+    async function atualizarTabelaPontos(name, digits) {
       const cacheKey = `pontos_${name}_${digits}`;
+      const cachedData = localStorage.getItem(cacheKey);
 
-      if (isAnHandle) {
-        await atualizaDadosTela(name, digits, cacheKey);
-      } else {
-        const cachedData = getCache(cacheKey);
-
-        if (cachedData) {
+      if (cachedData) {
           try {
-            renderTabelaPontos(cachedData);
+              const pontos = JSON.parse(cachedData);
+              renderTabelaPontos(pontos);
+              // console.log("Dados renderizados a partir do cache.");
           } catch (e) {
-            console.error("Erro ao processar dados do cache:", e);
-            renderSkeleton();
+              console.error("Erro ao processar dados do cache:", e);
+              renderSkeleton();
           }
-        } else {
-          renderSkeleton();
-          atualizaDadosTela(name, digits, cacheKey);
-        }
+      } else {
+        // Se NÃO houver cache, exibe o SKELETON enquanto busca os dados.
+        renderSkeleton();
       }
-    }
 
-    async function atualizaDadosTela(name, digits, cacheKey) {
       try {
         const data = await getPontos(name, digits);
         const pontos = data.pontos || [];
 
         renderTabelaPontos(pontos);
-        setCache(cacheKey, pontos, 1000 * 60 * 120)
-        //localStorage.setItem(cacheKey, JSON.stringify(pontos));
+        localStorage.setItem(cacheKey, JSON.stringify(pontos));
       } catch (error) {
         toastError("Erro de comunicação.");
-        console.error("Erro ao buscar registros:", error);
+        console.error('Erro ao buscar registros:', error);
 
-        const cachedData = getCache(cacheKey);
-
-        if (!cachedData) {
-          limparTabela();
+        if(!cachedData) {
+          const tabelaDiv = document.getElementById('divPontos');
+          tabelaDiv.innerHTML = '';
         }
       }
     }
 
-    if (name && digits) {
-      verificaTipoAtualizacao(name, digits);
-    }
-
-    function recuperarCache(cacheKey) {
-      return getCache(cacheKey);
-    }
-
-    function limparTabela() {
-      const tabelaDiv = document.getElementById("divPontos");
-      if (tabelaDiv) {
-        tabelaDiv.innerHTML = "";
-      }
+    if(name && digits ) {
+      atualizarTabelaPontos(name, digits);
     }
 
     function renderSkeleton() {

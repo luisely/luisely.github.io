@@ -12,7 +12,9 @@
 }
 body {
   font-family: "AmazonEmber", "Inter",  sans-serif;
-}
+  background: #ffffff;
+    background: linear-gradient(265deg, rgba(255, 255, 255, 1) 0%, rgba(158, 158, 158, 1) 0%, rgba(39, 149, 245, 1) 0%, rgba(0, 0, 0, 1) 86%);
+ }
 #divPontos::-webkit-scrollbar {
   display: none;
 }

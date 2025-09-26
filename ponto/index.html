@@ -17,7 +17,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
     rel="stylesheet">
- 
+
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.4/dist/js/datepicker-full.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.4/dist/js/locales/pt.js"></script>
@@ -25,7 +25,7 @@
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
   <script type="module" src="vars3.js"></script>
   <script type="module" src="axios.js"></script>
-  
+
 
   <style>
     input {
@@ -44,50 +44,30 @@
 
     <!-- INPUTS USERS DATA -->
     <div class="">
-      <div class="w-full max-w-xs mx-auto flex border-b border-l border-t border-r border-[#3d3940] rounded-t-md border-opacity-35 items-center">
+      <div
+        class="w-full max-w-xs mx-auto flex border-b border-l border-t border-r border-[#3d3940] rounded-t-md border-opacity-35 items-center">
         <input
           class="w-48 max-w-xs py-2 px-4 bg-[#d9d5c3] bg-opacity-35 outline-none rounded-tl-md border-r border-opacity-35 border-[#3d3940] backdrop-blur-md text-lg transition hover:brightness-110"
-          type="text" 
-          id="name" 
-          placeholder="Nome" 
-          maxlength="20" 
-          spellcheck="false"
-        />
-        <input 
-          id="digits"
+          type="text" id="name" placeholder="Nome" maxlength="20" spellcheck="false" />
+        <input id="digits"
           class="w-full max-w-xs py-2 rounded-tr text-center bg-[#d9d5c3] bg-opacity-35 backdrop-blur-md outline-none  text-lg transition hover:brightness-110"
-          inputmode="numeric" 
-          pattern="[0-9]*" 
-          placeholder="id" 
-          maxlength="3" 
-          type="number" 
-        />
+          inputmode="numeric" pattern="[0-9]*" placeholder="id" maxlength="3" type="number" />
       </div>
 
-      <div class="w-full max-w-xs mx-auto flex items-center border-b border-l border-r border-opacity-35 border-[#3d3940]">
-        <input 
+      <div
+        class="w-full max-w-xs mx-auto flex items-center border-b border-l border-r border-opacity-35 border-[#3d3940]">
+        <input
           class="w-48 h-[46px] max-w-xs py-2 px-4 bg-[#d9d5c3] bg-opacity-35 border-r border-[#3d3940] border-opacity-35 backdrop-blur-md outline-none text-lg transition hover:brightness-110"
-          type="text" 
-          id="date" 
-          placeholder="Data" 
-          name="date" 
-          inputmode='none'
-        />
-        <input 
+          type="text" id="date" placeholder="Data" name="date" inputmode='none' />
+        <input
           class="w-full max-w-xs py-2 px-4 bg-[#d9d5c3] bg-opacity-35 backdrop-blur-md outline-none text-lg transition hover:brightness-110"
-          type="time" 
-          id="time" 
-          placeholder="Hora" 
-          maxlength="3"  
-        />
+          type="time" id="time" placeholder="Hora" maxlength="3" />
       </div>
     </div>
 
     <!-- BUTTONS -->
     <div class="w-full max-w-xs flex justify-between">
-      <button 
-        id="registerBtn"
-        class="w-full py-2
+      <button id="registerBtn" class="w-full py-2
              text-[#3d3940]
               text-lg
              bg-[#3d3940] bg-opacity-15  rounded-b
@@ -96,92 +76,92 @@
               hover:brightness-110
               backdrop-blur-md -mt-[1px]
                border-[#3d3940] border-opacity-35 border
-              data-[isLoading='true']:cursor-not-allowed data-[isLoading='true']:opacity-50"
-      >
+              data-[isLoading='true']:cursor-not-allowed data-[isLoading='true']:opacity-50">
         Registrar
       </button>
 
-      
+
     </div>
-    <div id="divPontos" class="w-full text-white max-w-xs mt-1 overflow-y-auto backdrop-blur-md rounded-t rounded-b"></div>
+    <div id="divPontos" class="w-full text-white max-w-xs mt-1 overflow-y-auto backdrop-blur-md rounded-t rounded-b">
+    </div>
   </div>
 
   <script type="module">
-      import { BUTTON_WITH_LOADING, toastSuccess, toastError, toastInfo } from './vars3.js';
-      import { api } from './axios.js';
+    import { BUTTON_WITH_LOADING, toastSuccess, toastError, toastInfo } from './vars3.js';
+    import { api } from './axios.js';
 
-      const name = localStorage.getItem('000_name');
-      const digits = localStorage.getItem('000_digits');
+    const name = localStorage.getItem('000_name');
+    const digits = localStorage.getItem('000_digits');
 
-      /* JAVASCRIPT HTML MANIPULATION */
+    /* JAVASCRIPT HTML MANIPULATION */
 
-      if(name && digits) {
-        document.getElementById('name').value = name;
-        document.getElementById('digits').value = digits;
+    if (name && digits) {
+      document.getElementById('name').value = name;
+      document.getElementById('digits').value = digits;
+    }
+    document.getElementById('date').value = new Date().toLocaleDateString('pt-BR', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    }).split('/').reverse().join('-'); // Formato YYYY-MM-DD para o input date
+
+    document.getElementById('time').value = new Date().toLocaleTimeString('pt-BR', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+    });
+
+    const elem = document.querySelector('input[name="date"]');
+    const datepicker = new Datepicker(elem, {
+      autoHide: true,
+      language: 'pt',
+      format: 'dd/mm/yyyy',
+
+    });
+    datepicker.setDate(new Date());
+
+    document.getElementById('registerBtn').addEventListener('click', async () => {
+
+      const btn = document.getElementById('registerBtn');
+      const name = document.getElementById('name').value.trim().toLowerCase();
+      const digits = document.getElementById('digits').value.trim();
+      const dateFromInput = document.getElementById('date').value;
+      const timeFromInput = document.getElementById('time').value;
+
+      if (!name || !digits || digits.length !== 3 || isNaN(digits)) {
+        toastInfo("Preencha todos os campos corretamente.");
+        return;
       }
-      document.getElementById('date').value = new Date().toLocaleDateString('pt-BR', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-      }).split('/').reverse().join('-'); // Formato YYYY-MM-DD para o input date
 
-      document.getElementById('time').value = new Date().toLocaleTimeString('pt-BR', {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: false
-      });
+      btn.innerHTML = BUTTON_WITH_LOADING;
+      btn.disabled = true;
+      btn.setAttribute('data-isLoading', 'true');
+      try {
+        const response = await api.post('register', {
+          PK: name,
+          SK: digits.toString(),
+          name,
+          cpf3Digits: digits,
+          date: dateFromInput,
+          time: timeFromInput
+        });
 
-      const elem = document.querySelector('input[name="date"]');
-      const datepicker = new Datepicker(elem, {
-        autoHide: true,
-        language: 'pt',
-        format: 'dd/mm/yyyy',
-
-      });
-      datepicker.setDate(new Date());
-
-      document.getElementById('registerBtn').addEventListener('click', async () => {
-
-        const btn = document.getElementById('registerBtn');
-        const name = document.getElementById('name').value.trim().toLowerCase();
-        const digits = document.getElementById('digits').value.trim();
-        const dateFromInput = document.getElementById('date').value;
-        const timeFromInput = document.getElementById('time').value;
-
-        if (!name || !digits || digits.length !== 3 || isNaN(digits)) {
-            toastInfo("Preencha todos os campos corretamente.");
-          return;
+        if (response.status === 200 || response.status === 201) {
+          toastSuccess("Registro realizado com sucesso!");
+          atualizarTabelaPontos(name, digits);
+        } else {
+          toastError("Erro ao registrar. Tente novamente.");
         }
-
-        btn.innerHTML = BUTTON_WITH_LOADING;
-        btn.disabled = true;
-        btn.setAttribute('data-isLoading', 'true');
-        try {
-          const response = await api.post('register', {
-            PK: name,
-            SK: digits.toString(),
-            name,
-            cpf3Digits: digits,
-            date: dateFromInput,
-            time: timeFromInput
-          });
-
-          if (response.status === 200 || response.status === 201) {
-            toastSuccess("Registro realizado com sucesso!");
-            atualizarTabelaPontos(name, digits);
-          } else {
-            toastError("Erro ao registrar. Tente novamente.");
-          }
-        } catch (error) {
-            toastError("Erro de comunicação.");
-            console.error('Erro ao buscar registros:', error);
-        } finally {
-          btn.innerHTML = 'Registrar';
-          btn.disabled = false;
-          btn.setAttribute('data-isLoading', 'false');
-          localStorage.setItem('000_name', name);
-          localStorage.setItem('000_digits', digits);
-        }
+      } catch (error) {
+        toastError("Erro de comunicação.");
+        console.error('Erro ao buscar registros:', error);
+      } finally {
+        btn.innerHTML = 'Registrar';
+        btn.disabled = false;
+        btn.setAttribute('data-isLoading', 'false');
+        localStorage.setItem('000_name', name);
+        localStorage.setItem('000_digits', digits);
+      }
     });
 
     function renderTabelaPontos(pontos) {
@@ -224,12 +204,12 @@
     const tabelaDiv = document.getElementById('divPontos');
 
     tabelaDiv.addEventListener('click', (event) => {
-        const linkClicado = event.target.closest('.link-delete');
+      const linkClicado = event.target.closest('.link-delete');
 
-        if (linkClicado) {
-            event.preventDefault();
-            deleteRecord(linkClicado.dataset.record);
-        }
+      if (linkClicado) {
+        event.preventDefault();
+        deleteRecord(linkClicado.dataset.record);
+      }
     });
 
     function deleteRecord(record) {
@@ -270,14 +250,14 @@
       const cachedData = localStorage.getItem(cacheKey);
 
       if (cachedData) {
-          try {
-              const pontos = JSON.parse(cachedData);
-              renderTabelaPontos(pontos);
-              // console.log("Dados renderizados a partir do cache.");
-          } catch (e) {
-              console.error("Erro ao processar dados do cache:", e);
-              renderSkeleton();
-          }
+        try {
+          const pontos = JSON.parse(cachedData);
+          renderTabelaPontos(pontos);
+          // console.log("Dados renderizados a partir do cache.");
+        } catch (e) {
+          console.error("Erro ao processar dados do cache:", e);
+          renderSkeleton();
+        }
       } else {
         // Se NÃO houver cache, exibe o SKELETON enquanto busca os dados.
         renderSkeleton();
@@ -293,14 +273,14 @@
         toastError("Erro de comunicação.");
         console.error('Erro ao buscar registros:', error);
 
-        if(!cachedData) {
+        if (!cachedData) {
           const tabelaDiv = document.getElementById('divPontos');
           tabelaDiv.innerHTML = '';
         }
       }
     }
 
-    if(name && digits ) {
+    if (name && digits) {
       atualizarTabelaPontos(name, digits);
     }
 

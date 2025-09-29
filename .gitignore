@@ -3,3 +3,5 @@ _site/
 
 mock/
 images_ignore/
+*/node_modules/
+*/.pnp/

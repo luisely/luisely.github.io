@@ -13,15 +13,16 @@
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.4/dist/css/datepicker.min.css">
-  <link rel="stylesheet" type="text/css" href="./css/main.css">
+  <link rel="stylesheet" type="text/css" href="./css/output.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=SUSE+Mono:ital,wght@0,100..800;1,100..800&display=swap"
     rel="stylesheet">
 
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.4/dist/js/datepicker-full.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.4/dist/js/locales/pt.js"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
   <script type="module" src="vars3.js"></script>
   <script type="module" src="axios.js"></script>
@@ -38,57 +39,63 @@
   <title>Registrar</title>
 </head>
 
-<body class="bg-[url('./css/fundo2.jpg')] bg-center bg-cover w-dvw h-dvh flex items-center justify-center py-4">
+<body class="dark:bg-black w-dvw h-dvh flex items-center justify-center py-4">
   <div class="flex flex-col items-center justify-center h-full w-full max-w-xs">
     <div class="w-full"></div>
 
     <!-- INPUTS USERS DATA -->
-    <div class="">
-      <div
-        class="w-full max-w-xs mx-auto flex border-b border-l border-t border-r border-[#3d3940] rounded-t-md border-opacity-35 items-center">
-        <input
-          class="w-48 max-w-xs py-2 px-4 bg-[#d9d5c3] bg-opacity-35 outline-none rounded-tl-md border-r border-opacity-35 border-[#3d3940] backdrop-blur-md text-lg transition hover:brightness-110"
-          type="text" id="name" placeholder="Nome" maxlength="20" spellcheck="false" />
-        <input id="digits"
-          class="w-full max-w-xs py-2 rounded-tr text-center bg-[#d9d5c3] bg-opacity-35 backdrop-blur-md outline-none  text-lg transition hover:brightness-110"
-          inputmode="numeric" pattern="[0-9]*" placeholder="id" maxlength="3" type="number" />
-      </div>
+    <div class="dark:text-white text-lg">
+      <form id="form">
+        <div
+          class="w-full max-w-xs mx-auto flex border-b border-l border-t border-r rounded-t-md dark:border-zinc-500/35 border-blue-500 items-center px-1">
+          <input
+            class="w-48 h-8 max-w-xs px-2 dark:bg-black outline-none rounded-md border-r dark:border-zinc-500/35 border-blue-500"
+            type="text" id="name" placeholder="Nome" maxlength="20" spellcheck="false" />
+          <input id="digits"
+            class="w-full max-w-xs dark:bg-black rounded-tr text-center dark:border-zinc-500/35 outline-none border-blue-500"
+            inputmode="numeric" pattern="[0-9]*" placeholder="id" maxlength="3" type="password" />
+        </div>
+      </form>
 
       <div
-        class="w-full max-w-xs mx-auto flex items-center border-b border-l border-r border-opacity-35 border-[#3d3940]">
+        class="w-full max-w-xs mx-auto flex items-center border-b border-l border-r dark:border-zinc-500/35 border-blue-500 px-1">
         <input
-          class="w-48 h-[46px] max-w-xs py-2 px-4 bg-[#d9d5c3] bg-opacity-35 border-r border-[#3d3940] border-opacity-35 backdrop-blur-md outline-none text-lg transition hover:brightness-110"
+          class="w-48 h-8 max-w-xs px-2 dark:bg-black border-r dark:border-zinc-500/35 border-blue-500 outline-none"
           type="text" id="date" placeholder="Data" name="date" inputmode='none' />
-        <input
-          class="w-full max-w-xs py-2 px-4 bg-[#d9d5c3] bg-opacity-35 backdrop-blur-md outline-none text-lg transition hover:brightness-110"
-          type="time" id="time" placeholder="Hora" maxlength="3" />
+        <input class="w-full max-w-xs px-4 dark:bg-black bg-white outline-none" type="time" id="time"
+          placeholder="Hora" />
       </div>
     </div>
 
     <!-- BUTTONS -->
     <div class="w-full max-w-xs flex justify-between">
       <button id="registerBtn" class="w-full py-2
-             text-[#3d3940]
-              text-lg
-             bg-[#3d3940] bg-opacity-15  rounded-b
+              text-lg cursor-pointer
+              bg-blue-500 text-white rounded-b
+              hover:bg-blue-700
+              dark:hover:bg-blue-900/85
+              dark:bg-blue-900/75
               font-semibold tracking-wide
               transform transition-all duration-150
-              hover:brightness-110
-              backdrop-blur-md -mt-[1px]
-               border-[#3d3940] border-opacity-35 border
-              data-[isLoading='true']:cursor-not-allowed data-[isLoading='true']:opacity-50">
+              data-[isLoading='true']:cursor-not-allowed data-[isLoading='true']:opacity-50 ">
         Registrar
       </button>
 
 
     </div>
-    <div id="divPontos" class="w-full text-white max-w-xs mt-1 overflow-y-auto backdrop-blur-md rounded-t rounded-b">
+    <div id="divPontos" class="w-full text-white max-w-xs mt-2 overflow-y-auto space-y-2">
     </div>
   </div>
 
   <script type="module">
     import { BUTTON_WITH_LOADING, toastSuccess, toastError, toastInfo } from './vars3.js';
     import { api } from './axios.js';
+
+    function getFieldsValues() {
+      const name = document.getElementById('name').value.trim().toLowerCase();
+      const digits = document.getElementById('digits').value.trim();
+      return { name, digits };
+    }
 
     const name = localStorage.getItem('000_name');
     const digits = localStorage.getItem('000_digits');
@@ -98,6 +105,15 @@
     if (name && digits) {
       document.getElementById('name').value = name;
       document.getElementById('digits').value = digits;
+      atualizarTabelaPontos(name, digits);
+    } else {
+      form.addEventListener("focusout", (event) => {
+        const { name, digits } = getFieldsValues();
+        if (name && digits) {
+          getPontos(name, digits)
+          atualizarTabelaPontos(name, digits);
+        }
+      });
     }
     document.getElementById('date').value = new Date().toLocaleDateString('pt-BR', {
       year: 'numeric',
@@ -186,13 +202,14 @@
         const [db, mb, yb] = b.split('/').map(Number);
         return new Date(yb, mb - 1, db) - new Date(ya, ma - 1, da);
       }).forEach(date => {
-        html += `<div class="p-2 border-l border-r bg-[#d9d5c3] border-[#3d3940] border-opacity-35 first:rounded-t first:border-t last:rounded-b last:border-b bg-opacity-35 ">`
-        html += `<div class="text-center text-lg font-bold tracking-wider rounded-t bg-[#3d3940] border border-[#3d3940] border-opacity-35 text-[#3d3940] bg-opacity-15 ">${date}</div>`;
-        html += `<div class="flex justify-between items-center px-1 py-1 mb-1 border-b border-l border-r rounded-b border-[#3d3940] border-opacity-35">`;
+        const [day, month, year] = date.split('/').map(Number);
+        html += `<div>`
+        html += `<div class="text-center text-lg font-bold tracking-wider rounded-t bg-stone-500/15 border-b border-b-black/85 dark:border-b-white/65 dark:text-stone-300 text-black suse ">${date} • ${new Date(year, month - 1, day).toLocaleDateString('pt-BR', { weekday: 'short' })}</div>`;
+        html += `<div class="flex justify-between px-1 py-1 mb-1 rounded-b dark:bg-blue-900/75 bg-blue-500">`;
         porData[date]
           .sort() // Ordena horários
           .forEach(time => {
-            html += `<div class="text-md mx-2"><a href="#" class="link-delete hover:text-[#8b2c2c] text-zinc-800" data-record="${date}&${time}");">• ${time}</a></div>`;
+            html += `<div class="text-md mx-2"><a href="#" class="link-delete hover:text-stone-950 dark:text-white suse text-sm transition" data-record="${date}&${time}");">•${time}</a></div>`;
           });
         html += `</div>`;
         html += `</div>`;
@@ -280,41 +297,43 @@
       }
     }
 
-    if (name && digits) {
-      atualizarTabelaPontos(name, digits);
-    }
-
     function renderSkeleton() {
       const tabelaDiv = document.getElementById('divPontos');
       let skeletonHTML = `
-        <div class="space-y-5 animate-pulse">
-          <div class="space-y-2">
-            <div class="h-6 bg-neutral-700 rounded w-2/4 mx-auto"></div>
-            <div class="flex justify-around items-center gap-2">
-              <div class="h-5 bg-neutral-700 rounded w-1/4"></div>
-              <div class="h-5 bg-neutral-700 rounded w-1/4"></div>
-              <div class="h-5 bg-neutral-700 rounded w-1/4"></div>
-              <div class="h-5 bg-neutral-700 rounded w-1/4"></div>
+          <div class="animate-pulse">
+            <div class="h-8 text-center rounded-t bg-stone-500/15 border border-white/5 dark:text-stone-300"></div>
+            <div class="h-8 flex justify-between items-center px-1 py-1 mb-1 border-b border-l border-r rounded-b border-white/5 bg-zinc-900">
+                <div class="text-md mx-2"></div>
+                <div class="text-md mx-2"></div>
+                <div class="text-md mx-2"></div>
+                <div class="text-md mx-2"></div>
             </div>
           </div>
-          
-          <div class="space-y-2">
-            <div class="h-6 bg-neutral-700 rounded w-2/4 mx-auto"></div>
-            <div class="flex justify-around items-center gap-2">
-              <div class="h-5 bg-neutral-700 rounded w-1/4"></div>
-              <div class="h-5 bg-neutral-700 rounded w-1/4"></div>
-              <div class="h-5 bg-neutral-700 rounded w-1/4"></div>
-              <div class="h-5 bg-neutral-700 rounded w-1/4"></div>
+          <div class="animate-pulse">
+            <div class="h-8 text-center rounded-t bg-stone-500/15 border border-white/5 dark:text-stone-300"></div>
+            <div class="h-8 flex justify-between items-center px-1 py-1 mb-1 border-b border-l border-r rounded-b border-white/5 bg-zinc-900">
+                <div class="text-md mx-2"></div>
+                <div class="text-md mx-2"></div>
+                <div class="text-md mx-2"></div>
+                <div class="text-md mx-2"></div>
             </div>
           </div>
-
-          <div class="space-y-2">
-            <div class="h-6 bg-neutral-700 rounded w-2/4 mx-auto"></div>
-            <div class="flex justify-around items-center gap-2">
-              <div class="h-5 bg-neutral-700 rounded w-1/4"></div>
-              <div class="h-5 bg-neutral-700 rounded w-1/4"></div>
-              <div class="h-5 bg-neutral-700 rounded w-1/4"></div>
-              <div class="h-5 bg-neutral-700 rounded w-1/4"></div>
+          <div class="animate-pulse">
+            <div class="h-8 text-center rounded-t bg-stone-500/15 border border-white/5 dark:text-stone-300"></div>
+            <div class="h-8 flex justify-between items-center px-1 py-1 mb-1 border-b border-l border-r rounded-b border-white/5 bg-zinc-900">
+                <div class="text-md mx-2"></div>
+                <div class="text-md mx-2"></div>
+                <div class="text-md mx-2"></div>
+                <div class="text-md mx-2"></div>
+            </div>
+          </div>
+          <div class="animate-pulse">
+            <div class="h-8 text-center rounded-t bg-stone-500/15 border border-white/5 dark:text-stone-300"></div>
+            <div class="h-8 flex justify-between items-center px-1 py-1 mb-1 border-b border-l border-r rounded-b border-white/5 bg-zinc-900">
+                <div class="text-md mx-2"></div>
+                <div class="text-md mx-2"></div>
+                <div class="text-md mx-2"></div>
+                <div class="text-md mx-2"></div>
             </div>
           </div>
         </div>

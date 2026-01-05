@@ -26,6 +26,7 @@
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
   <script type="module" src="vars3.js"></script>
   <script type="module" src="axios.js"></script>
+  <script type="module" src="src/modal.js"></script>
 
 
   <style>
@@ -90,6 +91,7 @@
   <script type="module">
     import { BUTTON_WITH_LOADING, toastSuccess, toastError, toastInfo } from './vars3.js';
     import { api } from './axios.js';
+    import { showDeleteModal } from './src/modal.js';
 
     function getFieldsValues() {
       const name = document.getElementById('name').value.trim().toLowerCase();
@@ -256,75 +258,6 @@
         showDeleteModal(linkClicado.dataset.record);
       }
     });
-
-    function showDeleteModal(record) {
-      // Remove modal anterior caso exista
-      const prev = document.getElementById('delete-modal-overlay');
-      if (prev) prev.remove();
-
-      const [date, time] = (record || '').split('&');
-
-      const overlay = document.createElement('div');
-      overlay.id = 'delete-modal-overlay';
-      overlay.style.position = 'fixed';
-      overlay.style.inset = '0';
-      overlay.style.display = 'flex';
-      overlay.style.alignItems = 'center';
-      overlay.style.justifyContent = 'center';
-      overlay.style.background = 'rgba(0,0,0,0.45)';
-      overlay.style.zIndex = '9999';
-
-      const modal = document.createElement('div');
-      modal.style.color = 'black';
-      modal.style.padding = '16px';
-      modal.style.maxWidth = '90%';
-      modal.style.width = '360px';
-      modal.style.boxShadow = '0 10px 30px rgba(0,0,0,0.3)';
-      modal.style.textAlign = 'center';
-
-      // Suporte para dark mode
-      modal.className = 'dark:bg-zinc-900 dark:text-white border rounded-md';
-
-      const message = document.createElement('div');
-      message.style.marginBottom = '12px';
-      message.textContent = `Deseja realmente excluir o registro de ${date} às ${time}?`;
-
-      const buttons = document.createElement('div');
-      buttons.style.display = 'flex';
-      buttons.style.justifyContent = 'center';
-      buttons.style.gap = '8px';
-      buttons.className = 'cursor-pointer';
-
-      const cancelBtn = document.createElement('button');
-      cancelBtn.textContent = 'Cancelar';
-      cancelBtn.style.padding = '8px 12px';
-      cancelBtn.style.borderRadius = '6px';
-      cancelBtn.style.background = '#e5e7eb';
-      cancelBtn.addEventListener('click', () => overlay.remove());
-
-      const confirmBtn = document.createElement('button');
-      confirmBtn.textContent = 'Excluir';
-      confirmBtn.style.padding = '8px 12px';
-      confirmBtn.style.borderRadius = '6px';
-      confirmBtn.style.background = '#ef4444';
-      confirmBtn.style.color = 'white';
-      confirmBtn.addEventListener('click', () => {
-        overlay.remove();
-        deleteRecord(record);
-      });
-
-      buttons.appendChild(cancelBtn);
-      buttons.appendChild(confirmBtn);
-
-      modal.appendChild(message);
-      modal.appendChild(buttons);
-      overlay.appendChild(modal);
-
-      // fechar ao clicar fora
-      overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
-
-      document.body.appendChild(overlay);
-    }
 
     function deleteRecord(record) {
       const [date, time] = record.split('&');

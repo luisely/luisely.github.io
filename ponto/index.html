@@ -26,6 +26,7 @@
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
   <script type="module" src="vars3.js"></script>
   <script type="module" src="axios.js"></script>
+  <script type="module" src="src/modal.js"></script>
 
 
   <style>
@@ -88,8 +89,11 @@
   </div>
 
   <script type="module">
-    import { BUTTON_WITH_LOADING, toastSuccess, toastError, toastInfo } from './vars3.js';
     import { api } from './axios.js';
+    import { atualizarTabelaPontos } from './src/atualizarTabelaPontos.js';
+    import { getPontos } from './src/getPontos.js';
+    import { showDeleteModal } from './src/modal.js';
+    import { BUTTON_WITH_LOADING, tabelaDiv, toastError, toastInfo, toastSuccess } from './vars3.js';
 
     function getFieldsValues() {
       const name = document.getElementById('name').value.trim().toLowerCase();
@@ -180,193 +184,16 @@
       }
     });
 
-    function renderTabelaPontos(pontos) {
-      const tabelaDiv = document.getElementById('divPontos');
-      if (!pontos || pontos.length === 0) {
-        tabelaDiv.innerHTML = '';
-        return;
-      }
-
-      // Agrupa por data
-      const porData = {};
-      pontos.forEach(ponto => {
-        if (!porData[ponto.date]) porData[ponto.date] = [];
-        porData[ponto.date].push(ponto.time);
-      });
-
-      function formatMinutesToHHMM(totalMinutes) {
-        const hours = Math.floor(totalMinutes / 60);
-        const minutes = totalMinutes % 60;
-        return String(hours).padStart(2, '0') + ':' + String(minutes).padStart(2, '0');
-      }
-
-      function computeTotalMinutesFromTimes(times) {
-        if (!times || times.length === 0) return { minutes: 0, incomplete: false };
-        const sorted = times.slice().sort();
-        let total = 0;
-        for (let i = 0; i + 1 < sorted.length; i += 2) {
-          const [h1, m1] = sorted[i].split(':').map(Number);
-          const [h2, m2] = sorted[i + 1].split(':').map(Number);
-          const minutes1 = h1 * 60 + m1;
-          const minutes2 = h2 * 60 + m2;
-          if (!isNaN(minutes1) && !isNaN(minutes2) && minutes2 >= minutes1) {
-            total += (minutes2 - minutes1);
-          }
-        }
-        const incomplete = (sorted.length % 2) === 1;
-        return { minutes: total, incomplete, isLess8h: total < 480, isPlus8h: total > 590, isOk: total >= 480 && total <= 590 };
-      }
-
-      // Monta o HTML agrupado por data
-      let html = '';
-      Object.keys(porData).sort((a, b) => {
-        // Ordena datas mais recentes primeiro
-        const [da, ma, ya] = a.split('/').map(Number);
-        const [db, mb, yb] = b.split('/').map(Number);
-        return new Date(yb, mb - 1, db) - new Date(ya, ma - 1, da);
-      }).forEach(date => {
-        const [day, month, year] = date.split('/').map(Number);
-        // calcula total do dia
-        const timesForDate = porData[date] || [];
-        const { minutes: totalMinutes, incomplete, isLess8h, isPlus8h, isOk } = computeTotalMinutesFromTimes(timesForDate);
-        const totalHHMM = formatMinutesToHHMM(totalMinutes);
-
-        html += `<div>`
-        html += `<div class="text-center text-lg font-bold tracking-wider rounded-t bg-stone-500/15 border-b border-b-black/85 dark:border-b-white/65 dark:text-stone-300 text-black suse ">${date} •${new Date(year, month - 1, day).toLocaleDateString('pt-BR', { weekday: 'short' })} • <span data-less8h=${isLess8h} data-plus8h=${isPlus8h} data-ok=${isOk} class="data-[less8h='true']:dark:text-amber-400 data-[less8h='true']:text-amber-700 data-[plus8h='true']:dark:text-pink-400 data-[plus8h='true']:text-pink-600">${totalHHMM}${isPlus8h ? '!' : ''}</span></div>`;
-        html += `<div class="flex justify-between px-1 py-1 mb-1 rounded-b dark:bg-blue-900/75 bg-blue-500">`;
-        porData[date]
-          .sort() // Ordena horários
-          .forEach(time => {
-            html += `<div class="text-md mx-2"><a href="#" class="link-delete hover:text-stone-950 dark:text-white suse text-sm transition" data-record="${date}&${time}");">•${time}</a></div>`;
-          });
-        html += `</div>`;
-        html += `</div>`;
-      });
-
-      tabelaDiv.innerHTML = html;
-    }
-
-    const tabelaDiv = document.getElementById('divPontos');
-
     tabelaDiv.addEventListener('click', (event) => {
       const linkClicado = event.target.closest('.link-delete');
 
       if (linkClicado) {
         event.preventDefault();
-        deleteRecord(linkClicado.dataset.record);
+        showDeleteModal(linkClicado.dataset.record);
       }
     });
 
-    function deleteRecord(record) {
-      const [date, time] = record.split('&');
-      const name = localStorage.getItem('000_name');
-      const digits = localStorage.getItem('000_digits');
-
-      if (!name || !digits) {
-        toastInfo("Preencha todos os campos corretamente.");
-        return;
-      }
-
-      if (confirm(`Deseja excluir o registro de ${date} às ${time}?`)) {
-        api.delete(`delete/${name}/${digits}/record?date=${date}&time=${time}`)
-          .then(response => {
-            if (response.status === 200) {
-              toastSuccess("Registro excluído com sucesso!");
-              atualizarTabelaPontos(name, digits);
-            } else {
-              toastError("Erro ao excluir o registro.");
-            }
-          })
-          .catch(error => {
-            toastError("Erro de comunicação.");
-            console.error('Erro ao excluir registro:', error);
-          });
-      }
-    }
-
-    async function getPontos(name, digits) {
-      const response = await api.get(`getPontos/${name}/${digits}`);
-      return response.data;
-    }
-
-    // Função para buscar e atualizar a tabela
-    async function atualizarTabelaPontos(name, digits) {
-      const cacheKey = `pontos_${name}_${digits}`;
-      const cachedData = localStorage.getItem(cacheKey);
-
-      if (cachedData) {
-        try {
-          const pontos = JSON.parse(cachedData);
-          renderTabelaPontos(pontos);
-          // console.log("Dados renderizados a partir do cache.");
-        } catch (e) {
-          console.error("Erro ao processar dados do cache:", e);
-          renderSkeleton();
-        }
-      } else {
-        // Se NÃO houver cache, exibe o SKELETON enquanto busca os dados.
-        renderSkeleton();
-      }
-
-      try {
-        const data = await getPontos(name, digits);
-        const pontos = data.pontos || [];
-
-        renderTabelaPontos(pontos);
-        localStorage.setItem(cacheKey, JSON.stringify(pontos));
-      } catch (error) {
-        toastError("Erro de comunicação.");
-        console.error('Erro ao buscar registros:', error);
-
-        if (!cachedData) {
-          const tabelaDiv = document.getElementById('divPontos');
-          tabelaDiv.innerHTML = '';
-        }
-      }
-    }
-
-    function renderSkeleton() {
-      const tabelaDiv = document.getElementById('divPontos');
-      let skeletonHTML = `
-          <div class="animate-pulse">
-            <div class="h-8 text-center rounded-t bg-stone-500/15 border border-white/5 dark:text-stone-300"></div>
-            <div class="h-8 flex justify-between items-center px-1 py-1 mb-1 border-b border-l border-r rounded-b border-white/5 bg-zinc-900">
-                <div class="text-md mx-2"></div>
-                <div class="text-md mx-2"></div>
-                <div class="text-md mx-2"></div>
-                <div class="text-md mx-2"></div>
-            </div>
-          </div>
-          <div class="animate-pulse">
-            <div class="h-8 text-center rounded-t bg-stone-500/15 border border-white/5 dark:text-stone-300"></div>
-            <div class="h-8 flex justify-between items-center px-1 py-1 mb-1 border-b border-l border-r rounded-b border-white/5 bg-zinc-900">
-                <div class="text-md mx-2"></div>
-                <div class="text-md mx-2"></div>
-                <div class="text-md mx-2"></div>
-                <div class="text-md mx-2"></div>
-            </div>
-          </div>
-          <div class="animate-pulse">
-            <div class="h-8 text-center rounded-t bg-stone-500/15 border border-white/5 dark:text-stone-300"></div>
-            <div class="h-8 flex justify-between items-center px-1 py-1 mb-1 border-b border-l border-r rounded-b border-white/5 bg-zinc-900">
-                <div class="text-md mx-2"></div>
-                <div class="text-md mx-2"></div>
-                <div class="text-md mx-2"></div>
-                <div class="text-md mx-2"></div>
-            </div>
-          </div>
-          <div class="animate-pulse">
-            <div class="h-8 text-center rounded-t bg-stone-500/15 border border-white/5 dark:text-stone-300"></div>
-            <div class="h-8 flex justify-between items-center px-1 py-1 mb-1 border-b border-l border-r rounded-b border-white/5 bg-zinc-900">
-                <div class="text-md mx-2"></div>
-                <div class="text-md mx-2"></div>
-                <div class="text-md mx-2"></div>
-                <div class="text-md mx-2"></div>
-            </div>
-          </div>
-        </div>
-      `;
-      tabelaDiv.innerHTML = skeletonHTML;
-    }
   </script>
 </body>
+
+</html>
